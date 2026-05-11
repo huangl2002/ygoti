@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>YGOTI · 游戏王卡组人格测试</title>
+<style>
+  :root {
+    --bg: #1a1a2e;
+    --card: #222240;
+    --text: #e8e0d0;
+    --sub: #9a9484;
+    --gold: #c9a44b;
+    --gold2: #e0c068;
+    --accent: #4a7dc9;
+    --accent2: #6da0e8;
+    --radius: 12px;
+    --shadow: 0 4px 24px rgba(0,0,0,.3);
+    --border: #3a3550;
+    --bar-bg: #2e2a40;
+    --selected-bg: #2a2840;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: #0f0f20;
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .app {
+    width: 100%;
+    max-width: 420px;
+    min-height: 100vh;
+    background: var(--bg);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .page { display: none; flex-direction: column; min-height: 100vh; padding: 24px 20px; }
+  .page.active { display: flex; }
+
+  /* ==================== Landing ==================== */
+  #landing {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: radial-gradient(ellipse at 50% 30%, #2a2850 0%, #1a1a2e 70%);
+    color: var(--text);
+    position: relative;
+  }
+  #landing::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='28' fill='none' stroke='%23c9a44b20' stroke-width='1'/%3E%3C/svg%3E");
+    opacity: .4; pointer-events: none;
+  }
+  #landing .logo {
+    width: 90px; height: 90px;
+    background: linear-gradient(135deg, #c9a44b, #e0c068);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 42px; margin-bottom: 20px;
+    box-shadow: 0 0 40px rgba(201,164,75,.25);
+    position: relative; z-index: 1;
+  }
+  #landing h1 {
+    font-size: 28px; font-weight: 800; margin-bottom: 6px;
+    background: linear-gradient(135deg, #e0c068, #c9a44b);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    position: relative; z-index: 1;
+  }
+  #landing .subtitle { font-size: 14px; color: var(--sub); margin-bottom: 8px; line-height: 1.6; position: relative; z-index: 1; }
+  #landing .acronym {
+    font-size: 11px; color: #5a5570; letter-spacing: 3px; margin-bottom: 20px;
+    position: relative; z-index: 1;
+  }
+  #landing .features {
+    display: flex; gap: 24px; margin-bottom: 32px; font-size: 13px; color: var(--sub);
+    position: relative; z-index: 1;
+  }
+  #landing .features span { display: flex; align-items: center; gap: 4px; }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: 8px; border: none; cursor: pointer; font-size: 16px; font-weight: 600;
+    padding: 14px 32px; border-radius: 50px; transition: all .2s;
+    font-family: inherit; -webkit-appearance: none;
+  }
+  .btn:active { transform: scale(.96); }
+  .btn-primary {
+    background: linear-gradient(135deg, #c9a44b, #e0c068);
+    color: #1a1a2e; box-shadow: 0 4px 20px rgba(201,164,75,.30);
+    font-weight: 700;
+  }
+
+  /* ==================== Quiz ==================== */
+  #quiz { padding-top: 36px; }
+  .quiz-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 8px; font-size: 13px; color: var(--sub);
+  }
+  .progress-bar {
+    width: 100%; height: 5px; background: var(--bar-bg); border-radius: 3px;
+    margin-bottom: 28px; overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold2));
+    border-radius: 3px; transition: width .4s ease;
+  }
+
+  .question-card {
+    background: var(--card); border-radius: var(--radius);
+    padding: 24px 20px; box-shadow: var(--shadow);
+    margin-bottom: 20px; border: 1px solid var(--border);
+  }
+  .question-num { font-size: 12px; color: var(--gold); font-weight: 600; margin-bottom: 10px; letter-spacing: 1px; }
+  .question-text { font-size: 18px; font-weight: 600; line-height: 1.6; color: var(--text); }
+
+  .options { display: flex; flex-direction: column; gap: 8px; }
+  .option {
+    display: flex; align-items: center; gap: 12px;
+    padding: 13px 16px; border: 1.5px solid var(--border);
+    border-radius: 10px; cursor: pointer; transition: all .2s;
+    font-size: 14px; background: var(--card);
+  }
+  .option:active { background: #282445; }
+  .option.selected { border-color: var(--gold); background: rgba(201,164,75,.08); }
+  .option .dot {
+    width: 18px; height: 18px; border-radius: 50%;
+    border: 2px solid #4a4560; flex-shrink: 0; transition: all .2s;
+  }
+  .option.selected .dot {
+    border-color: var(--gold); background: var(--gold);
+    box-shadow: 0 0 0 3px rgba(201,164,75,.2);
+  }
+
+  .quiz-nav { display: flex; gap: 12px; margin-top: auto; padding-bottom: 28px; }
+  .quiz-nav .btn { flex: 1; }
+  .quiz-nav .btn-prev {
+    background: transparent; color: var(--sub); border: 1.5px solid var(--border);
+    font-size: 14px;
+  }
+
+  .slide-enter { animation: slideIn .35s ease; }
+  @keyframes slideIn { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+
+  /* ==================== Results ==================== */
+  #results { padding-top: 40px; align-items: center; text-align: center; }
+
+  .result-badge {
+    width: 110px; height: 110px; border-radius: 50%;
+    background: linear-gradient(135deg, #c9a44b, #e0c068);
+    color: #1a1a2e; display: flex; align-items: center; justify-content: center;
+    font-size: 28px; font-weight: 900; letter-spacing: 2px;
+    margin-bottom: 6px; box-shadow: 0 8px 32px rgba(201,164,75,.30);
+    font-family: "Courier New", monospace;
+  }
+  .result-name { font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+  .result-alias { font-size: 14px; color: var(--sub); margin-bottom: 20px; }
+
+  .deck-recommend {
+    width: 100%; background: linear-gradient(135deg, #2a2540, #252040);
+    border-radius: var(--radius); padding: 20px 24px;
+    box-shadow: var(--shadow); margin-bottom: 14px;
+    border: 1px solid var(--border);
+  }
+  .deck-recommend h3 { font-size: 13px; color: var(--gold); margin-bottom: 12px; text-align: left; letter-spacing: 1px; text-transform: uppercase; }
+  .deck-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 8px; padding: 14px 16px; margin-bottom: 8px;
+    text-align: left; display: flex; align-items: center; gap: 12px;
+  }
+  .deck-card:last-child { margin-bottom: 0; }
+  .deck-icon {
+    width: 44px; height: 44px; border-radius: 8px;
+    background: linear-gradient(135deg, #c9a44b40, #e0c06820);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0;
+  }
+  .deck-info { flex: 1; }
+  .deck-name { font-size: 15px; font-weight: 700; color: var(--text); }
+  .deck-desc { font-size: 12px; color: var(--sub); margin-top: 2px; line-height: 1.4; }
+
+  .dimensions {
+    width: 100%; background: var(--card); border-radius: var(--radius);
+    padding: 18px 20px; box-shadow: var(--shadow); margin-bottom: 14px;
+    border: 1px solid var(--border);
+  }
+  .dimensions h3 { font-size: 13px; color: var(--gold); margin-bottom: 14px; text-align: left; letter-spacing: 1px; text-transform: uppercase; }
+  .dim-row {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
+    font-size: 12px; font-weight: 600;
+  }
+  .dim-row:last-child { margin-bottom: 0; }
+  .dim-row .left, .dim-row .right { width: 44px; text-align: center; flex-shrink: 0; font-size: 11px; }
+  .dim-row .left { color: var(--gold); }
+  .dim-row .right { color: var(--accent2); }
+  .dim-bar-wrap { flex: 1; height: 7px; background: var(--bar-bg); border-radius: 4px; overflow: hidden; display: flex; }
+  .dim-bar-left, .dim-bar-right { height: 100%; transition: width .6s ease; }
+  .dim-bar-left { background: var(--gold); border-radius: 4px 0 0 4px; }
+  .dim-bar-right { background: var(--accent); border-radius: 0 4px 4px 0; }
+  .dim-pct { font-size: 11px; color: var(--sub); width: 44px; text-align: center; flex-shrink: 0; }
+
+  .desc-card {
+    width: 100%; background: var(--card); border-radius: var(--radius);
+    padding: 18px 20px; box-shadow: var(--shadow); margin-bottom: 20px;
+    text-align: left; border: 1px solid var(--border);
+  }
+  .desc-card h3 { font-size: 13px; color: var(--gold); margin-bottom: 8px; letter-spacing: 1px; text-transform: uppercase; }
+  .desc-card p { font-size: 14px; line-height: 1.7; color: var(--text); }
+
+  .result-actions { display: flex; gap: 12px; width: 100%; padding-bottom: 36px; }
+  .result-actions .btn { flex: 1; }
+  .btn-share { background: linear-gradient(135deg, #c9a44b, #e0c068); color: #1a1a2e; font-weight: 700; }
+  .btn-retry { background: transparent; color: var(--sub); border: 1.5px solid var(--border); }
+
+  /* ==================== Share Modal ==================== */
+  #share-modal {
+    display: none; position: fixed; inset: 0; z-index: 100;
+    background: rgba(0,0,0,.75); justify-content: center; align-items: center;
+    padding: 24px;
+  }
+  #share-modal.show { display: flex; }
+  #share-modal .modal-inner {
+    background: var(--card); border-radius: var(--radius); padding: 20px;
+    max-width: 340px; width: 100%; text-align: center; border: 1px solid var(--border);
+  }
+  #share-modal .modal-inner h3 { margin-bottom: 16px; font-size: 17px; color: var(--text); }
+  #share-modal canvas { width: 100%; border-radius: 10px; margin-bottom: 16px; }
+  .modal-actions { display: flex; gap: 10px; }
+  .modal-actions .btn { flex: 1; font-size: 14px; padding: 12px 16px; }
+  .btn-close { background: var(--bar-bg); color: var(--text); }
+  .btn-save { background: linear-gradient(135deg, #c9a44b, #e0c068); color: #1a1a2e; font-weight: 700; }
+
+  /* ==================== Toast ==================== */
+  .toast {
+    position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%);
+    background: var(--gold); color: #1a1a2e; padding: 12px 24px; border-radius: 50px;
+    font-size: 14px; font-weight: 600; z-index: 200; opacity: 0; transition: opacity .3s;
+    pointer-events: none;
+  }
+  .toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ============ Landing ============ -->
+  <div class="page active" id="landing">
+    <div class="logo">🃏</div>
+    <h1>游戏王卡组人格测试</h1>
+    <p class="subtitle">通过你的打牌风格和人格偏好<br>发现最适合你的游戏王卡组</p>
+    <div class="acronym">Y G O T I</div>
+    <div class="features">
+      <span>📝 36题</span>
+      <span>⏱ 约5分钟</span>
+      <span>🎴 24卡组</span>
+    </div>
+    <button class="btn btn-primary" onclick="startQuiz()">决斗开始！</button>
+  </div>
+
+  <!-- ============ Quiz ============ -->
+  <div class="page" id="quiz">
+    <div class="quiz-header">
+      <span id="q-progress-text">第 1/36 题</span>
+      <span id="q-category"></span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+
+    <div class="question-card" id="question-card">
+      <div class="question-num" id="q-num">Q1</div>
+      <div class="question-text" id="q-text"></div>
+    </div>
+
+    <div class="options" id="options-container"></div>
+
+    <div class="quiz-nav">
+      <button class="btn btn-prev" id="btn-prev" onclick="prevQuestion()">← 上一题</button>
+    </div>
+  </div>
+
+  <!-- ============ Results ============ -->
+  <div class="page" id="results">
+    <div class="result-badge" id="result-badge"></div>
+    <div class="result-name" id="result-name"></div>
+    <div class="result-alias" id="result-alias"></div>
+
+    <div class="deck-recommend">
+      <h3>推荐卡组</h3>
+      <div id="deck-cards"></div>
+    </div>
+
+    <div class="dimensions">
+      <h3>决斗者维度分析</h3>
+      <div id="dims-container"></div>
+    </div>
+
+    <div class="desc-card">
+      <h3>你的决斗者档案</h3>
+      <p id="result-desc"></p>
+    </div>
+
+    <div class="result-actions">
+      <button class="btn btn-retry" onclick="restart()">重新测试</button>
+      <button class="btn btn-share" onclick="openShare()">分享结果</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ Share Modal ============ -->
+<div id="share-modal">
+  <div class="modal-inner">
+    <h3>分享你的决斗者档案</h3>
+    <canvas id="share-canvas" width="600" height="900"></canvas>
+    <div class="modal-actions">
+      <button class="btn btn-close" onclick="closeShare()">关闭</button>
+      <button class="btn btn-save" onclick="saveImage()">保存图片</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ===================== DATA =====================
+
+// 36 questions: 9 per dimension
+// C=Combo展开 / R=Response应对
+// A=Aggro强攻 / D=Defense防守
+// S=Soul魂系 / M=Meta竞技
+// Q=Quick速攻 / G=Grind持久
+
+const questions = [
+  // ===== C/R 维度: 展开 vs 应对 (9题) =====
+  { text: "打牌时你更享受一口气展开铺满全场的快感", dim: "CR", dir: 1 },
+  { text: "先手你会做最大场，哪怕对面手里可能有「原始生命态尼比鲁」", dim: "CR", dir: 1 },
+  { text: "比起留手坑防陨石，你更想把所有资源都用来展开", dim: "CR", dir: 1 },
+  { text: "你觉得「通常召唤阿莱斯特」虽然稳定但太朴实了，不如多卡combo有成就感", dim: "CR", dir: 1 },
+  { text: "展开被灰流丽打断你会当场血压拉满", dim: "CR", dir: 1 },
+  { text: "花里胡哨的combo就是游戏王的浪漫——哪怕对手在刷手机", dim: "CR", dir: 1 },
+  { text: "你更享受说书式展开的过程而不是结果", dim: "CR", dir: 1 },
+  { text: "比起每一步都要精确计算的展开链，见招拆招更符合你的风格", dim: "CR", dir: -1 },
+  { text: "对面回合你手里没康会感到很不安", dim: "CR", dir: -1 },
+
+  // ===== A/D 维度: 强攻 vs 防守 (9题) =====
+  { text: "战斗阶段是游戏王最让人热血沸腾的环节", dim: "AD", dir: 1 },
+  { text: "看到对面空场，你脑中只有一个念头：OTK", dim: "AD", dir: 1 },
+  { text: "高攻击力大怪拍下来就是牌佬的浪漫", dim: "AD", dir: 1 },
+  { text: "后手突破成功时你会想喊一声「这就是我的王牌！」", dim: "AD", dir: 1 },
+  { text: "最好的防御就是进攻——把对面LP归零完事", dim: "AD", dir: 1 },
+  { text: "拖进拉锯战会让你逐渐失去耐心", dim: "AD", dir: 1 },
+  { text: "你觉得陷阱卡太被动了，不如怪兽效果来得直接", dim: "AD", dir: 1 },
+  { text: "比起OTK，你更喜欢用坑和阻抗慢慢消磨对手意志", dim: "AD", dir: -1 },
+  { text: "后手突破失败的痛苦远大于先手被解的挫败感", dim: "AD", dir: -1 },
+
+  // ===== S/M 维度: 魂系 vs 竞技 (9题) =====
+  { text: "即使你的本命卡组在饼图垫底，你也绝不会换卡组", dim: "SM", dir: 1 },
+  { text: "版本怎么变，你对本命系列的忠诚不会变", dim: "SM", dir: 1 },
+  { text: "赢很重要——但用自己爱的卡组赢才叫真正的胜利", dim: "SM", dir: 1 },
+  { text: "你会因为一张卡的卡图帅/画风美而把它塞进主卡组", dim: "SM", dir: 1 },
+  { text: "你花在看卡片设定集和故事上的时间比打天梯还多", dim: "SM", dir: 1 },
+  { text: "用娱乐卡组偷死主流卡组是你游戏王生涯中最爽的瞬间", dim: "SM", dir: 1 },
+  { text: "你有至少一张「魂卡」——哪怕它和构筑毫无关系也必须下", dim: "SM", dir: 1 },
+  { text: "什么强玩什么，跟上环境才是正道", dim: "SM", dir: -1 },
+  { text: "看到两套一模一样的主流镜像对局你会觉得这才是真正的博弈", dim: "SM", dir: -1 },
+
+  // ===== Q/G 维度: 速攻 vs 持久 (9题) =====
+  { text: "五分钟以上的对局让你想拔网线", dim: "QG", dir: 1 },
+  { text: "你享受干净利落地结束对局，不拖泥带水", dim: "QG", dir: 1 },
+  { text: "对方每回合烧绳子思考三分钟会让你抓狂", dim: "QG", dir: 1 },
+  { text: "超过20个回合的对局是一种酷刑", dim: "QG", dir: 1 },
+  { text: "你更偏好快节奏的BO1而非打满三局的BO3", dim: "QG", dir: 1 },
+  { text: "速战速决是你的信条，打完赶紧下一把", dim: "QG", dir: 1 },
+  { text: "资源循环型卡组磨磨唧唧，不如直接一波带走", dim: "QG", dir: 1 },
+  { text: "对方在你的回合「连锁！」超过五次你会想投降", dim: "QG", dir: 1 },
+  { text: "长盘拉锯中通过资源管理磨死对手让你成就感满满", dim: "QG", dir: -1 },
+];
+
+// Deck database
+const deckDB = {
+  "电子龙": { icon: "⚡", desc: "后手OTK的教科书，嵌合狂暴龙一拳超人。GX时代情怀，简单粗暴的暴力美学。", playstyle: "后手特化OTK" },
+  "英雄": { icon: "🦸", desc: "融合召唤！从火焰翼人到暗爪，GX老兵的终极信仰。十代永远的本命。", playstyle: "融合展开Beat" },
+  "龙link": { icon: "🐉", desc: "龙族链接的集大成者，从守护龙到弹射龙，一套combo打完场子堪比长城。", playstyle: "高速链接展开" },
+  "斩机": { icon: "🔢", desc: "电子界族的数学之美，西格玛一拳OTK。天梯常客，后手突破的利刃。", playstyle: "后手OTK Combo" },
+  "魔救": { icon: "⛏️", desc: "挖矿同调，翻五张是信仰。亚当族的馈赠，每次翻牌都是一次心跳。", playstyle: "同调展开" },
+  "魔术师": { icon: "🎩", desc: "灵摆召唤的荣光，宙读银金轨迹——灵摆时代的终极形态。扎克的意志永不消亡。", playstyle: "灵摆展开Combo" },
+  "幻影骑士团": { icon: "💀", desc: "墓地即是资源！锈斧断碎剑，暗镇魂的压制美学。ARC-V隼爷的魂。", playstyle: "墓地资源展开" },
+  "废二": { icon: "🔧", desc: "废品同调士+二重身战士=无限可能。不动游星的意志传承，同调召唤是男人的浪漫。", playstyle: "同调展开Combo" },
+  "码语者": { icon: "💻", desc: "Playmaker的王牌。解码语者→转码→访问码语者，电子界族的进化之路。", playstyle: "链接展开" },
+  "转生炎兽": { icon: "🔥", desc: "转生Link召唤！Soulburner的炙热之魂，日光狼的无限循环。", playstyle: "中速Link Beat" },
+  "铁兽": { icon: "🦅", desc: "鸟兽战士大团结！除外墓地拉link，徒花凶鸟的压制艺术。", playstyle: "链接中速控制" },
+  "青眼白龙": { icon: "🐲", desc: "3000攻2500防，海马濑人的绝对骄傲。毁灭的喷射白光！最强凡骨的终极信仰。", playstyle: "高攻压制Beat" },
+  "雷龙": { icon: "⛈️", desc: "除外即展开，超雷龙的封锁令人窒息。从手牌到墓地到除外，三位一体的雷击。", playstyle: "融合控制Beat" },
+  "淘气仙星": { icon: "💫", desc: "每张卡烧你200，铃铛一响血压飙升。蓝色仙女的甜美收割。", playstyle: "Burn控制" },
+  "十二兽": { icon: "🐂", desc: "一卡超量，龙枪单刷。曾经的绝对T0，简洁高效的Xyz暴力美学。", playstyle: "单卡Xyz Beat" },
+  "蛇眼": { icon: "🐍", desc: "罪宝永续魔法，蛇眼炎龙的最强展开。将对手的怪兽当作装备——蛇眼罪宝的霸权。", playstyle: "链接展开中速" },
+  "俱舍怒威族": { icon: "👁️", desc: "里侧除外！空场特召！封锁！新时代的次元控制，出场就让人压力拉满。", playstyle: "封锁控制Beat" },
+  "虫惑魔": { icon: "🕳️", desc: "落穴！狡猾落穴！一套坑洞让你寸步难行。可爱的外表下是最阴间的陷阱。", playstyle: "坑Beat控制" },
+  "御巫": { icon: "🪭", desc: "装备卡反伤，0攻也能秒人。一碰就弹，把对手的攻击力化为自己的武器。", playstyle: "反伤控制" },
+  "真龙": { icon: "🏛️", desc: "上级召唤的最终形态。不需要额外卡组，帝王的尊严靠上级召唤来捍卫。", playstyle: "上级召唤控制" },
+  "黄金国": { icon: "🪙", desc: "黄金卿埃尔德里奇，不死族的永恒之王。一卡站场+陷阱循环，磨到你天荒地老。", playstyle: "陷阱控制Grind" },
+  "闪刀姬": { icon: "✈️", desc: "单卡启动的巅峰，零依一人撑起整个卡组。三魔法的灵活调度，王牌机师的孤高美学。", playstyle: "单卡控制" },
+  "白银城": { icon: "🏰", desc: "迷宫之主的待客之道。从卡组直接发动陷阱，拉比林斯的无限欢迎。", playstyle: "陷阱控制Grind" },
+  "烙印": { icon: "⚜️", desc: "阿不思的落胤与圣女之悲恋。融合召唤的现代复兴，冰剑龙的绝对压制。", playstyle: "融合中速控制" },
+};
+
+// 16 personality types mapped to decks
+const types = {
+  CASQ: {
+    name: "魂之OTK", alias: "用本命卡组一拳终结对手",
+    desc: "你是一个热情奔放的决斗者，用自己喜欢的卡组打出最畅快的OTK是你的终极追求。你不喜欢拖泥带水，信奉'打得一拳开，免得百拳来'。即使卡组不是最强，你也坚信爱能弥补一切差距。战斗阶段的你眼神最亮。",
+    decks: ["电子龙", "青眼白龙"]
+  },
+  CASG: {
+    name: "英雄本色", alias: "融合之光永不熄灭",
+    desc: "你是魂与力量的结合体，相信用自己喜欢的卡组正面击溃对手才是决斗者的正道。你喜欢一步步积累优势然后给予致命一击。你的决斗风格坦荡而坚定，不屑于阴间陷阱，打就要光明正大地赢。",
+    decks: ["英雄", "青眼白龙"]
+  },
+  CAMQ: {
+    name: "疾风怒涛", alias: "最快最强的竞技展开者",
+    desc: "你是一个追求极致效率的决斗者，什么强就玩什么，而且还要打出最凶狠的OTK。你对环境的理解很深，总能找到最短的制胜路线。你不爱废话，进战阶就是你的态度宣言。",
+    decks: ["龙link", "斩机"]
+  },
+  CAMG: {
+    name: "极限展开", alias: "用最强combo征服一切",
+    desc: "你是竞技环境中令人敬畏的展开型玩家。你享受用最复杂的combo做出最恐怖的场子，对卡组运转的理解深入骨髓。你不惧怕长盘，因为有足够的技术储备来应对任何局面。",
+    decks: ["魔救", "魔术师"]
+  },
+  CDSQ: {
+    name: "暗影奇袭", alias: "从墓地发动的突袭",
+    desc: "你低调但致命，看似防守实则暗藏杀机。你的决斗风格偏向控制，但一旦抓住机会就会迅速结束比赛。墓地在你眼里不是终点，而是第二手牌。",
+    decks: ["幻影骑士团", "转生炎兽"]
+  },
+  CDSG: {
+    name: "经典咏流传", alias: "同调是男人永远的浪漫",
+    desc: "你是一个怀旧而坚韧的决斗者。你喜欢经典的combo，享受每一次精密运转带来的成就感。虽然你不是最强的竞技选手，但你对卡组的理解和热爱是最深的。同调召唤是你心中永不褪色的浪漫。",
+    decks: ["废二", "码语者"]
+  },
+  CDMQ: {
+    name: "速攻铁壁", alias: "竞技场上的效率控场者",
+    desc: "你是一个理性的竞技型玩家，善于在控制和效率之间找到平衡。你不追求铺天盖地的展开，而是用最精简的操作达到最好的压制效果。你是那种让对手觉得'打不动'的决斗者。",
+    decks: ["铁兽", "转生炎兽"]
+  },
+  CDMG: {
+    name: "铁壁构筑", alias: "长盘中的不败堡垒",
+    desc: "你是竞技环境中最稳定的存在。你的卡组构筑精妙而坚固，不依赖单一combo，有着多线作战的能力。长盘拉锯是你的主场，越到后期你越从容。",
+    decks: ["烙印", "铁兽"]
+  },
+  RASQ: {
+    name: "魂之拳", alias: "简单直接地揍翻对手",
+    desc: "你不喜欢花哨的操作，见招拆招才是你的风格。你喜欢用高攻大怪堂堂正正地碾压对手，简单、直接、有效。你打牌不追求复杂的combo，但每一拳都致命。",
+    decks: ["青眼白龙", "雷龙"]
+  },
+  RASG: {
+    name: "闪耀风暴", alias: "用光芒照亮整个决斗场",
+    desc: "你是一个闪耀的魂系决斗者，不依赖复杂的展开，靠扎实的卡片质量和敏锐的临场判断取胜。你喜欢每一张卡都有用的感觉，卡组就是你的工具箱。",
+    decks: ["雷龙", "淘气仙星"]
+  },
+  RAMQ: {
+    name: "速攻制胜", alias: "高效就是最强的武器",
+    desc: "你信奉效率至上。什么卡组最强、最快、最稳定，你就玩什么。你对环境的理解透彻，善于找到最短的胜利路径。在你的字典里，效率就是一切。",
+    decks: ["十二兽", "蛇眼"]
+  },
+  RAMG: {
+    name: "霸道总裁", alias: "全场都在我掌控之中",
+    desc: "你是竞技场上令人畏惧的控场型玩家。你的卡组兼具压制力和持久力，让对手从一开始就感受到压力。你不怒自威，每一步操作都带着强烈的压迫感。",
+    decks: ["蛇眼", "俱舍怒威族"]
+  },
+  RDSQ: {
+    name: "阴间小清新", alias: "陷阱是最高级的艺术",
+    desc: "你外表温和，内心却深不可测。你喜欢用陷阱和反制来打乱对手的节奏，让对手在你的迷宫中寸步难行。你的决斗风格讲究优雅和效率的平衡。",
+    decks: ["虫惑魔", "御巫"]
+  },
+  RDSG: {
+    name: "古之壁", alias: "历经风雨而不倒的老兵",
+    desc: "你是游戏王中的智者，不追求速胜，而是享受用经验和智慧慢慢磨垮对手的过程。你的卡组稳固如山，每一张卡都有它的使命。时间是你的朋友。",
+    decks: ["真龙", "黄金国"]
+  },
+  RDMQ: {
+    name: "王牌机师", alias: "孤高而精准的操控者",
+    desc: "你是决斗场上的孤高存在。不需要铺满场面，几张关键卡就能掌控全局。你对卡组运转的理解极深，每一步操作都经过精密计算，是真正的人机合一。",
+    decks: ["闪刀姬"]
+  },
+  RDMG: {
+    name: "深渊掌控", alias: "在长盘中最恐怖的对手",
+    desc: "你是竞技环境中的终极控制型玩家。放慢节奏、消耗资源、耐心布局——越到后期你越危险。你的卡组就像一座深渊，对手越深入越绝望。",
+    decks: ["白银城", "烙印"]
+  },
+};
+
+// ===================== STATE =====================
+
+let currentQ = 0;
+let answers = new Array(questions.length).fill(0);
+let isAdvancing = false;
+
+// ===================== VIEW SWITCHING =====================
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// ===================== QUIZ =====================
+
+function startQuiz() {
+  currentQ = 0;
+  answers = new Array(questions.length).fill(0);
+  showPage('quiz');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = questions[currentQ];
+  const pct = Math.round((currentQ / questions.length) * 100);
+  document.getElementById('q-progress-text').textContent = `第 ${currentQ + 1}/${questions.length} 题`;
+  document.getElementById('q-num').textContent = `Q${currentQ + 1}`;
+  document.getElementById('q-text').textContent = q.text;
+  document.getElementById('progress-fill').style.width = pct + '%';
+
+  const btnPrev = document.getElementById('btn-prev');
+  btnPrev.style.visibility = currentQ === 0 ? 'hidden' : 'visible';
+
+  const options = [
+    { value: 5, label: '非常同意' },
+    { value: 4, label: '比较同意' },
+    { value: 3, label: '一般 / 不确定' },
+    { value: 2, label: '不太同意' },
+    { value: 1, label: '非常不同意' },
+  ];
+
+  const container = document.getElementById('options-container');
+  container.innerHTML = '';
+  options.forEach(opt => {
+    const div = document.createElement('div');
+    div.className = 'option';
+    if (answers[currentQ] === opt.value) div.classList.add('selected');
+    div.innerHTML = `<span class="dot"></span>${opt.label}`;
+    div.addEventListener('click', () => selectOption(opt.value));
+    container.appendChild(div);
+  });
+
+  const card = document.getElementById('question-card');
+  card.classList.remove('slide-enter');
+  void card.offsetWidth;
+  card.classList.add('slide-enter');
+
+  isAdvancing = false;
+}
+
+function selectOption(value) {
+  if (isAdvancing) return;
+  answers[currentQ] = value;
+
+  const container = document.getElementById('options-container');
+  const children = container.children;
+  const options = [
+    { value: 5 }, { value: 4 }, { value: 3 }, { value: 2 }, { value: 1 },
+  ];
+  for (let i = 0; i < children.length; i++) {
+    children[i].classList.toggle('selected', options[i].value === value);
+  }
+
+  isAdvancing = true;
+  setTimeout(() => {
+    if (currentQ < questions.length - 1) {
+      currentQ++;
+      renderQuestion();
+    } else {
+      showResults();
+    }
+  }, 380);
+}
+
+function prevQuestion() {
+  if (currentQ > 0) {
+    currentQ--;
+    renderQuestion();
+  }
+}
+
+// ===================== SCORING =====================
+
+function calculateResults() {
+  const scores = { CR: 0, AD: 0, SM: 0, QG: 0 };
+  const counts = { CR: 0, AD: 0, SM: 0, QG: 0 };
+
+  questions.forEach((q, i) => {
+    if (answers[i] === 0) return;
+    scores[q.dim] += answers[i] * q.dir;
+    counts[q.dim] += 5;
+  });
+
+  const pcts = {};
+  for (const dim of ['CR', 'AD', 'SM', 'QG']) {
+    const maxScore = counts[dim];
+    pcts[dim] = Math.round(((scores[dim] + maxScore) / (2 * maxScore)) * 100);
+  }
+
+  const typeCode =
+    (pcts.CR >= 50 ? 'C' : 'R') +
+    (pcts.AD >= 50 ? 'A' : 'D') +
+    (pcts.SM >= 50 ? 'S' : 'M') +
+    (pcts.QG >= 50 ? 'Q' : 'G');
+
+  return { scores, pcts, typeCode };
+}
+
+// ===================== RESULTS =====================
+
+function showResults() {
+  const { pcts, typeCode } = calculateResults();
+  const type = types[typeCode];
+
+  showPage('results');
+  document.getElementById('result-badge').textContent = typeCode;
+  document.getElementById('result-name').textContent = typeCode + ' · ' + type.name;
+  document.getElementById('result-alias').textContent = type.alias;
+  document.getElementById('result-desc').textContent = type.desc;
+
+  // Deck cards
+  const deckContainer = document.getElementById('deck-cards');
+  deckContainer.innerHTML = type.decks.map(d => {
+    const info = deckDB[d] || { icon: '🃏', desc: '', playstyle: '' };
+    return `
+      <div class="deck-card">
+        <div class="deck-icon">${info.icon}</div>
+        <div class="deck-info">
+          <div class="deck-name">${d}</div>
+          <div class="deck-desc">${info.desc}</div>
+        </div>
+      </div>`;
+  }).join('');
+
+  // Dimension bars
+  const dimLabels = {
+    CR: { left: 'C 展开型', right: 'R 应对型' },
+    AD: { left: 'A 强攻型', right: 'D 防守型' },
+    SM: { left: 'S 魂系', right: 'M 竞技' },
+    QG: { left: 'Q 速攻', right: 'G 持久' },
+  };
+
+  const dimsContainer = document.getElementById('dims-container');
+  dimsContainer.innerHTML = '';
+  for (const dim of ['CR', 'AD', 'SM', 'QG']) {
+    const p = pcts[dim];
+    const labels = dimLabels[dim];
+    const row = document.createElement('div');
+    row.className = 'dim-row';
+    row.innerHTML = `
+      <span class="left">${labels.left}</span>
+      <div class="dim-bar-wrap">
+        <div class="dim-bar-left" style="width:${p}%"></div>
+        <div class="dim-bar-right" style="width:${100 - p}%"></div>
+      </div>
+      <span class="right">${labels.right}</span>
+      <span class="dim-pct">${p}% / ${100 - p}%</span>
+    `;
+    dimsContainer.appendChild(row);
+  }
+
+  window._resultData = { pcts, typeCode, type };
+  document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+}
+
+function restart() {
+  currentQ = 0;
+  answers = new Array(questions.length).fill(0);
+  startQuiz();
+}
+
+// ===================== SHARE / CANVAS =====================
+
+function openShare() {
+  const modal = document.getElementById('share-modal');
+  modal.classList.add('show');
+  drawShareCanvas();
+}
+
+function closeShare() {
+  document.getElementById('share-modal').classList.remove('show');
+}
+
+function drawShareCanvas() {
+  const { pcts, typeCode, type } = window._resultData;
+  const canvas = document.getElementById('share-canvas');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width;
+  const H = canvas.height;
+
+  // Background
+  const bg = ctx.createLinearGradient(0, 0, W, H);
+  bg.addColorStop(0, '#1a1a2e');
+  bg.addColorStop(1, '#222240');
+  ctx.fillStyle = bg;
+  ctx.beginPath();
+  ctx.roundRect(0, 0, W, H, 24);
+  ctx.fill();
+
+  // Gold border
+  ctx.strokeStyle = '#c9a44b';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.roundRect(15, 15, W - 30, H - 30, 18);
+  ctx.stroke();
+
+  // Title
+  ctx.fillStyle = '#c9a44b';
+  ctx.font = 'bold 16px -apple-system, "PingFang SC", sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('YGOTI · 游戏王卡组人格测试', W / 2, 62);
+
+  // Type badge
+  const badgeGrad = ctx.createLinearGradient(W / 2 - 60, 0, W / 2 + 60, 0);
+  badgeGrad.addColorStop(0, '#c9a44b');
+  badgeGrad.addColorStop(1, '#e0c068');
+  ctx.fillStyle = badgeGrad;
+  ctx.beginPath();
+  ctx.roundRect(W / 2 - 60, 85, 120, 110, 55);
+  ctx.fill();
+
+  ctx.fillStyle = '#1a1a2e';
+  ctx.font = 'bold 30px "Courier New", monospace';
+  ctx.fillText(typeCode, W / 2, 155);
+
+  ctx.fillStyle = '#e8e0d0';
+  ctx.font = 'bold 22px -apple-system, "PingFang SC", sans-serif';
+  ctx.fillText(type.name, W / 2, 225);
+
+  ctx.fillStyle = '#9a9484';
+  ctx.font = '14px -apple-system, "PingFang SC", sans-serif';
+  ctx.fillText(type.alias, W / 2, 250);
+
+  // Deck section
+  let y = 280;
+  ctx.fillStyle = '#c9a44b';
+  ctx.font = 'bold 14px -apple-system, "PingFang SC", sans-serif';
+  ctx.textAlign = 'left';
+  ctx.fillText('推荐卡组', 50, y);
+
+  y += 20;
+  type.decks.forEach(d => {
+    const info = deckDB[d] || { icon: '🃏', desc: '', playstyle: '' };
+    ctx.fillStyle = '#222240';
+    ctx.beginPath();
+    ctx.roundRect(50, y, W - 100, 44, 8);
+    ctx.fill();
+    ctx.fillStyle = '#e8e0d0';
+    ctx.font = '15px -apple-system, "PingFang SC", sans-serif';
+    ctx.fillText(info.icon + '  ' + d, 64, y + 30);
+    y += 56;
+  });
+
+  // Dimension bars
+  y += 8;
+  ctx.fillStyle = '#c9a44b';
+  ctx.font = 'bold 14px -apple-system, "PingFang SC", sans-serif';
+  ctx.fillText('决斗者维度', 50, y);
+  y += 20;
+
+  const dimLabels = {
+    CR: ['C 展开', 'R 应对'],
+    AD: ['A 强攻', 'D 防守'],
+    SM: ['S 魂系', 'M 竞技'],
+    QG: ['Q 速攻', 'G 持久'],
+  };
+  const dimOrder = ['CR', 'AD', 'SM', 'QG'];
+  const barLeft = 50;
+  const barWidth = W - 100;
+
+  ctx.font = '11px -apple-system, "PingFang SC", sans-serif';
+  dimOrder.forEach(dim => {
+    const p = pcts[dim];
+    const labels = dimLabels[dim];
+
+    ctx.fillStyle = '#c9a44b';
+    ctx.textAlign = 'left';
+    ctx.fillText(labels[0], barLeft, y + 10);
+    ctx.fillStyle = '#6da0e8';
+    ctx.textAlign = 'right';
+    ctx.fillText(labels[1], barLeft + barWidth, y + 10);
+    ctx.textAlign = 'left';
+
+    ctx.fillStyle = '#2e2a40';
+    ctx.beginPath();
+    ctx.roundRect(barLeft + 44, y - 2, barWidth - 88, 14, 7);
+    ctx.fill();
+
+    const leftW = Math.round((barWidth - 88) * p / 100);
+    if (leftW > 0) {
+      ctx.fillStyle = '#c9a44b';
+      ctx.beginPath();
+      ctx.roundRect(barLeft + 44, y - 2, Math.max(leftW, 7), 14, 7);
+      ctx.fill();
+    }
+    const rightW = (barWidth - 88) - leftW;
+    if (rightW > 0) {
+      ctx.fillStyle = '#4a7dc9';
+      ctx.beginPath();
+      ctx.roundRect(barLeft + 44 + leftW, y - 2, rightW, 14, 7);
+      ctx.fill();
+    }
+
+    ctx.fillStyle = '#e8e0d0';
+    ctx.font = 'bold 10px -apple-system, "PingFang SC", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(p + '% : ' + (100 - p) + '%', W / 2, y + 9);
+    ctx.textAlign = 'left';
+    ctx.font = '11px -apple-system, "PingFang SC", sans-serif';
+
+    y += 24;
+  });
+
+  // Footer
+  y += 16;
+  ctx.fillStyle = '#5a5570';
+  ctx.font = '12px -apple-system, "PingFang SC", sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('YGOTI · 找到你的本命卡组', W / 2, y);
+}
+
+function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+  let line = '';
+  for (let i = 0; i < text.length; i++) {
+    const testLine = line + text[i];
+    if (ctx.measureText(testLine).width > maxWidth && line.length > 0) {
+      ctx.fillText(line, x, y);
+      line = text[i];
+      y += lineHeight;
+    } else {
+      line = testLine;
+    }
+  }
+  if (line.length > 0) ctx.fillText(line, x, y);
+}
+
+function saveImage() {
+  const canvas = document.getElementById('share-canvas');
+  const link = document.createElement('a');
+  link.download = 'YGOTI决斗者档案.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+  showToast('决斗者档案已保存！');
+}
+
+// ===================== TOAST =====================
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2000);
+}
+
+// ===================== INIT =====================
+if (!CanvasRenderingContext2D.prototype.roundRect) {
+  CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
+    if (typeof r === 'number') r = { tl: r, tr: r, br: r, bl: r };
+    this.beginPath();
+    this.moveTo(x + r.tl, y);
+    this.lineTo(x + w - r.tr, y);
+    this.quadraticCurveTo(x + w, y, x + w, y + r.tr);
+    this.lineTo(x + w, y + h - r.br);
+    this.quadraticCurveTo(x + w, y + h, x + w - r.br, y + h);
+    this.lineTo(x + r.bl, y + h);
+    this.quadraticCurveTo(x, y + h, x, y + h - r.bl);
+    this.lineTo(x, y + r.tl);
+    this.quadraticCurveTo(x, y, x + r.tl, y);
+    this.closePath();
+  };
+}
+
+document.getElementById('share-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeShare();
+});
+</script>
+</body>
+</html>
