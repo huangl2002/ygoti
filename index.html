@@ -25,7 +25,9 @@
 
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-    background: #0f0f20;
+    background:
+      #0f0f20
+      url("data:image/svg+xml,%3Csvg width='80' height='80' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='40' cy='40' r='38' fill='none' stroke='%23c9a44b05' stroke-width='0.5'/%3E%3Ccircle cx='40' cy='40' r='25' fill='none' stroke='%23c9a44b04' stroke-width='0.3'/%3E%3Ccircle cx='40' cy='40' r='12' fill='%23c9a44b03'/%3E%3C/svg%3E");
     color: var(--text);
     min-height: 100vh;
     display: flex;
@@ -52,38 +54,44 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    background: radial-gradient(ellipse at 50% 30%, #2a2850 0%, #1a1a2e 70%);
+    background: #1a1a2e;
     color: var(--text);
     position: relative;
   }
   #landing::before {
     content: '';
     position: absolute; inset: 0;
-    background: url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='28' fill='none' stroke='%23c9a44b20' stroke-width='1'/%3E%3C/svg%3E");
-    opacity: .4; pointer-events: none;
+    background:
+      url("data:image/svg+xml,%3Csvg width='80' height='80' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M40 5L68 20L68 50L40 65L12 50L12 20Z' fill='none' stroke='%23c9a44b10' stroke-width='0.5'/%3E%3Cline x1='40' y1='5' x2='40' y2='65' stroke='%23c9a44b06' stroke-width='0.3'/%3E%3Cline x1='12' y1='20' x2='68' y2='50' stroke='%23c9a44b06' stroke-width='0.3'/%3E%3Cline x1='68' y1='20' x2='12' y2='50' stroke='%23c9a44b06' stroke-width='0.3'/%3E%3C/svg%3E"),
+      radial-gradient(ellipse at 50% 30%, #2a2850 0%, #1a1a2e 70%);
+    opacity: 1; pointer-events: none;
   }
   #landing .logo {
-    width: 90px; height: 90px;
-    background: linear-gradient(135deg, #c9a44b, #e0c068);
+    width: 80px; height: 80px;
+    background: radial-gradient(circle at 40% 40%, #2a2850, #1a1a2e);
     border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    font-size: 42px; margin-bottom: 20px;
-    box-shadow: 0 0 40px rgba(201,164,75,.25);
+    margin-bottom: 14px;
+    box-shadow: 0 0 40px rgba(201,164,75,.25), 0 0 80px rgba(201,164,75,.08), inset 0 0 16px rgba(201,164,75,.05);
     position: relative; z-index: 1;
+    border: 2px solid rgba(201,164,75,.2);
   }
   #landing h1 {
-    font-size: 28px; font-weight: 800; margin-bottom: 6px;
+    font-size: 26px; font-weight: 800; margin-bottom: 4px;
     background: linear-gradient(135deg, #e0c068, #c9a44b);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     position: relative; z-index: 1;
   }
-  #landing .subtitle { font-size: 14px; color: var(--sub); margin-bottom: 8px; line-height: 1.6; position: relative; z-index: 1; }
+  #landing .subtitle { font-size: 13px; color: var(--sub); margin-bottom: 4px; line-height: 1.5; position: relative; z-index: 1; }
+  #landing .eye-ornament {
+    margin-bottom: 0; position: relative; z-index: 1;
+  }
   #landing .acronym {
-    font-size: 11px; color: #5a5570; letter-spacing: 3px; margin-bottom: 20px;
+    font-size: 11px; color: #5a5570; letter-spacing: 3px; margin-bottom: 10px;
     position: relative; z-index: 1;
   }
   #landing .features {
-    display: flex; gap: 24px; margin-bottom: 32px; font-size: 13px; color: var(--sub);
+    display: flex; gap: 20px; margin-bottom: 14px; font-size: 13px; color: var(--sub);
     position: relative; z-index: 1;
   }
   #landing .features span { display: flex; align-items: center; gap: 4px; }
@@ -112,14 +120,18 @@
     margin-bottom: 28px; overflow: hidden;
   }
   .progress-fill {
-    height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold2));
+    height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold2), #f0d878, var(--gold2));
+    background-size: 200% 100%;
+    animation: shimmer 2s linear infinite;
     border-radius: 3px; transition: width .4s ease;
   }
+  @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
   .question-card {
     background: var(--card); border-radius: var(--radius);
     padding: 24px 20px; box-shadow: var(--shadow);
-    margin-bottom: 20px; border: 1px solid var(--border);
+    margin-bottom: 20px; border: 1.5px solid var(--border);
+    border-left: 3px solid var(--gold);
   }
   .question-num { font-size: 12px; color: var(--gold); font-weight: 600; margin-bottom: 10px; letter-spacing: 1px; }
   .question-text { font-size: 18px; font-weight: 600; line-height: 1.6; color: var(--text); }
@@ -131,6 +143,7 @@
     border-radius: 10px; cursor: pointer; transition: all .2s;
     font-size: 14px; background: var(--card);
   }
+  .option:hover { border-color: #6a6070; background: #262440; }
   .option:active { background: #282445; }
   .option.selected { border-color: var(--gold); background: rgba(201,164,75,.08); }
   .option .dot {
@@ -156,12 +169,13 @@
   #results { padding-top: 40px; align-items: center; text-align: center; }
 
   .result-badge {
-    width: 110px; height: 110px; border-radius: 50%;
-    background: linear-gradient(135deg, #c9a44b, #e0c068);
+    width: 120px; height: 120px; border-radius: 50%;
+    background: radial-gradient(circle at 40% 40%, #e0c068, #c9a44b);
     color: #1a1a2e; display: flex; align-items: center; justify-content: center;
-    font-size: 28px; font-weight: 900; letter-spacing: 2px;
-    margin-bottom: 6px; box-shadow: 0 8px 32px rgba(201,164,75,.30);
+    font-size: 30px; font-weight: 900; letter-spacing: 2px;
+    margin-bottom: 8px; box-shadow: 0 8px 40px rgba(201,164,75,.35);
     font-family: "Courier New", monospace;
+    border: 3px solid rgba(201,164,75,.3);
   }
   .result-name { font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
   .result-alias { font-size: 14px; color: var(--sub); margin-bottom: 20px; }
@@ -170,13 +184,21 @@
     width: 100%; background: linear-gradient(135deg, #2a2540, #252040);
     border-radius: var(--radius); padding: 20px 24px;
     box-shadow: var(--shadow); margin-bottom: 14px;
-    border: 1px solid var(--border);
+    border: 1.5px solid rgba(201,164,75,.15);
   }
   .deck-recommend h3 { font-size: 13px; color: var(--gold); margin-bottom: 12px; text-align: left; letter-spacing: 1px; text-transform: uppercase; }
   .deck-card {
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 8px; padding: 14px 16px; margin-bottom: 8px;
-    text-align: left; display: flex; align-items: center; gap: 12px;
+    background: var(--card); border: 1.5px solid var(--border);
+    border-radius: 10px; padding: 16px 18px; margin-bottom: 10px;
+    text-align: left; display: flex; align-items: center; gap: 16px;
+    transition: border-color .2s, transform .2s;
+    position: relative; overflow: hidden;
+  }
+  .deck-card::after {
+    content: ''; position: absolute; top: 0; right: 0;
+    width: 60px; height: 60px;
+    background: radial-gradient(circle at 100% 0%, rgba(201,164,75,.08) 0%, transparent 70%);
+    pointer-events: none;
   }
   .deck-card:last-child { margin-bottom: 0; }
   .deck-icon {
@@ -185,9 +207,21 @@
     display: flex; align-items: center; justify-content: center;
     font-size: 20px; flex-shrink: 0;
   }
+  .deck-thumb {
+    width: 72px; height: 105px; border-radius: 5px;
+    object-fit: cover; flex-shrink: 0;
+    border: 1.5px solid #4a4560;
+    box-shadow: 0 2px 10px rgba(0,0,0,.5);
+    background: var(--bar-bg);
+  }
+  .deck-playstyle {
+    display: inline-block; font-size: 10px; color: var(--gold);
+    background: rgba(201,164,75,.10); padding: 2px 7px;
+    border-radius: 4px; margin-top: 3px; letter-spacing: .5px;
+  }
   .deck-info { flex: 1; }
-  .deck-name { font-size: 15px; font-weight: 700; color: var(--text); }
-  .deck-desc { font-size: 12px; color: var(--sub); margin-top: 2px; line-height: 1.4; }
+  .deck-name { font-size: 16px; font-weight: 700; color: var(--text); }
+  .deck-desc { font-size: 13px; color: var(--sub); margin-top: 3px; line-height: 1.5; }
 
   .dimensions {
     width: 100%; background: var(--card); border-radius: var(--radius);
@@ -255,13 +289,37 @@
 
   <!-- ============ Landing ============ -->
   <div class="page active" id="landing">
-    <div class="logo">🃏</div>
+    <div class="logo">
+        <svg viewBox="0 0 100 100" width="56" height="56" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M50 8L85 28L85 68L50 88L15 68L15 28Z" fill="#1a1a2e" stroke="url(#goldGrad)" stroke-width="2.5"/>
+          <line x1="50" y1="8" x2="50" y2="88" stroke="url(#goldGrad)" stroke-width="1.5"/>
+          <line x1="15" y1="28" x2="85" y2="68" stroke="url(#goldGrad)" stroke-width="1.5"/>
+          <line x1="85" y1="28" x2="15" y2="68" stroke="url(#goldGrad)" stroke-width="1.5"/>
+          <circle cx="50" cy="48" r="14" fill="#1a1a2e" stroke="url(#goldGrad)" stroke-width="2"/>
+          <polygon points="50,36 58,46 55,46 55,58 45,58 45,46 42,46" fill="url(#goldGrad)"/>
+          <defs>
+            <linearGradient id="goldGrad" x1="0" y1="0" x2="100" y2="100">
+              <stop offset="0%" stop-color="#e0c068"/>
+              <stop offset="50%" stop-color="#c9a44b"/>
+              <stop offset="100%" stop-color="#e0c068"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+    <div class="eye-ornament">
+        <svg width="40" height="24" viewBox="0 0 40 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 2C10 2 3 12 3 12S10 22 20 22 37 12 37 12 30 2 20 2Z" stroke="url(#eyeGold)" stroke-width="1.5" fill="none"/>
+          <circle cx="20" cy="12" r="5" stroke="url(#eyeGold)" stroke-width="1.2" fill="none"/>
+          <circle cx="20" cy="12" r="2" fill="url(#eyeGold)"/>
+          <defs><linearGradient id="eyeGold" x1="0" y1="0" x2="40" y2="24"><stop offset="0%" stop-color="#c9a44b"/><stop offset="100%" stop-color="#e0c068"/></linearGradient></defs>
+        </svg>
+      </div>
     <h1>游戏王卡组人格测试</h1>
     <p class="subtitle">通过你的打牌风格和人格偏好<br>发现最适合你的游戏王卡组</p>
     <div class="acronym">Y G O T I</div>
     <div class="features">
-      <span>📝 36题</span>
-      <span>⏱ 约5分钟</span>
+      <span>📝 24题</span>
+      <span>⏱ 约4分钟</span>
       <span>🎴 24卡组</span>
     </div>
     <button class="btn btn-primary" onclick="startQuiz()">决斗开始！</button>
@@ -303,6 +361,11 @@
       <div id="dims-container"></div>
     </div>
 
+    <div class="desc-card" id="commentary-card" style="border-left: 3px solid var(--gold);">
+      <h3>决斗者评语</h3>
+      <p id="result-commentary" style="font-style: italic;"></p>
+    </div>
+
     <div class="desc-card">
       <h3>你的决斗者档案</h3>
       <p id="result-desc"></p>
@@ -320,7 +383,7 @@
 <div id="share-modal">
   <div class="modal-inner">
     <h3>分享你的决斗者档案</h3>
-    <canvas id="share-canvas" width="600" height="900"></canvas>
+    <canvas id="share-canvas" width="600" height="1000"></canvas>
     <div class="modal-actions">
       <button class="btn btn-close" onclick="closeShare()">关闭</button>
       <button class="btn btn-save" onclick="saveImage()">保存图片</button>
@@ -333,169 +396,320 @@
 <script>
 // ===================== DATA =====================
 
-// 36 questions: 9 per dimension
+// 24 questions: 6 per dimension (3正3负, 平衡设计)
 // C=Combo展开 / R=Response应对
 // A=Aggro强攻 / D=Defense防守
 // S=Soul魂系 / M=Meta竞技
 // Q=Quick速攻 / G=Grind持久
 
 const questions = [
-  // ===== C/R 维度: 展开 vs 应对 (9题) =====
-  { text: "打牌时你更享受一口气展开铺满全场的快感", dim: "CR", dir: 1 },
-  { text: "先手你会做最大场，哪怕对面手里可能有「原始生命态尼比鲁」", dim: "CR", dir: 1 },
-  { text: "比起留手坑防陨石，你更想把所有资源都用来展开", dim: "CR", dir: 1 },
-  { text: "你觉得「通常召唤阿莱斯特」虽然稳定但太朴实了，不如多卡combo有成就感", dim: "CR", dir: 1 },
+  // ===== C/R 维度: 展开 vs 应对 (5题) =====
+  { text: "先手你会优先做最大场，哪怕对面手里可能有陨石", dim: "CR", dir: 1 },
+  { text: "一套combo打完场子铺满的感觉比赢牌本身还爽", dim: "CR", dir: 1 },
   { text: "展开被灰流丽打断你会当场血压拉满", dim: "CR", dir: 1 },
-  { text: "花里胡哨的combo就是游戏王的浪漫——哪怕对手在刷手机", dim: "CR", dir: 1 },
-  { text: "你更享受说书式展开的过程而不是结果", dim: "CR", dir: 1 },
-  { text: "比起每一步都要精确计算的展开链，见招拆招更符合你的风格", dim: "CR", dir: -1 },
+  { text: "比起说书式展开，你更喜欢见招拆招、看情况灵活应对", dim: "CR", dir: -1 },
   { text: "对面回合你手里没康会感到很不安", dim: "CR", dir: -1 },
 
-  // ===== A/D 维度: 强攻 vs 防守 (9题) =====
-  { text: "战斗阶段是游戏王最让人热血沸腾的环节", dim: "AD", dir: 1 },
-  { text: "看到对面空场，你脑中只有一个念头：OTK", dim: "AD", dir: 1 },
-  { text: "高攻击力大怪拍下来就是牌佬的浪漫", dim: "AD", dir: 1 },
-  { text: "后手突破成功时你会想喊一声「这就是我的王牌！」", dim: "AD", dir: 1 },
+  // ===== A/D 维度: 强攻 vs 防守 (5题) =====
+  { text: "看到对面空场，你脑中只有一个念头：进战阶OTK", dim: "AD", dir: 1 },
+  { text: "高攻大怪一拳灌过去就是牌佬的终极浪漫", dim: "AD", dir: 1 },
   { text: "最好的防御就是进攻——把对面LP归零完事", dim: "AD", dir: 1 },
-  { text: "拖进拉锯战会让你逐渐失去耐心", dim: "AD", dir: 1 },
-  { text: "你觉得陷阱卡太被动了，不如怪兽效果来得直接", dim: "AD", dir: 1 },
-  { text: "比起OTK，你更喜欢用坑和阻抗慢慢消磨对手意志", dim: "AD", dir: -1 },
-  { text: "后手突破失败的痛苦远大于先手被解的挫败感", dim: "AD", dir: -1 },
+  { text: "比起OTK的爽快，你更喜欢用坑和阻抗慢慢消磨对手意志", dim: "AD", dir: -1 },
+  { text: "后手突破失败带来的挫败感远比先手被解大", dim: "AD", dir: -1 },
 
-  // ===== S/M 维度: 魂系 vs 竞技 (9题) =====
-  { text: "即使你的本命卡组在饼图垫底，你也绝不会换卡组", dim: "SM", dir: 1 },
-  { text: "版本怎么变，你对本命系列的忠诚不会变", dim: "SM", dir: 1 },
-  { text: "赢很重要——但用自己爱的卡组赢才叫真正的胜利", dim: "SM", dir: 1 },
-  { text: "你会因为一张卡的卡图帅/画风美而把它塞进主卡组", dim: "SM", dir: 1 },
-  { text: "你花在看卡片设定集和故事上的时间比打天梯还多", dim: "SM", dir: 1 },
-  { text: "用娱乐卡组偷死主流卡组是你游戏王生涯中最爽的瞬间", dim: "SM", dir: 1 },
-  { text: "你有至少一张「魂卡」——哪怕它和构筑毫无关系也必须下", dim: "SM", dir: 1 },
+  // ===== S/M 维度: 魂系 vs 竞技 (5题) =====
+  { text: "即使你的本命卡组在饼图垫底，你也绝不会换", dim: "SM", dir: 1 },
+  { text: "用娱乐卡组偷死主流卡组是你整个月最爽的瞬间", dim: "SM", dir: 1 },
+  { text: "你会因为一张卡卡图好看而把它硬塞进主卡组", dim: "SM", dir: 1 },
   { text: "什么强玩什么，跟上环境才是正道", dim: "SM", dir: -1 },
-  { text: "看到两套一模一样的主流镜像对局你会觉得这才是真正的博弈", dim: "SM", dir: -1 },
+  { text: "看到两套一模一样的主流镜像对局，你觉得这才是真正的博弈", dim: "SM", dir: -1 },
 
-  // ===== Q/G 维度: 速攻 vs 持久 (9题) =====
+  // ===== Q/G 维度: 速攻 vs 持久 (5题) =====
   { text: "五分钟以上的对局让你想拔网线", dim: "QG", dir: 1 },
-  { text: "你享受干净利落地结束对局，不拖泥带水", dim: "QG", dir: 1 },
-  { text: "对方每回合烧绳子思考三分钟会让你抓狂", dim: "QG", dir: 1 },
-  { text: "超过20个回合的对局是一种酷刑", dim: "QG", dir: 1 },
-  { text: "你更偏好快节奏的BO1而非打满三局的BO3", dim: "QG", dir: 1 },
   { text: "速战速决是你的信条，打完赶紧下一把", dim: "QG", dir: 1 },
-  { text: "资源循环型卡组磨磨唧唧，不如直接一波带走", dim: "QG", dir: 1 },
-  { text: "对方在你的回合「连锁！」超过五次你会想投降", dim: "QG", dir: 1 },
-  { text: "长盘拉锯中通过资源管理磨死对手让你成就感满满", dim: "QG", dir: -1 },
+  { text: "对方每回合烧绳子思考三分钟会让你抓狂", dim: "QG", dir: 1 },
+  { text: "长盘拉锯中通过资源管理慢慢磨死对手让你成就感满满", dim: "QG", dir: -1 },
+  { text: "超过20回合的对局是一场精彩的博弈而非折磨", dim: "QG", dir: -1 },
+
+  // 平衡补充题 (每维+1反向, 达到3正3负, 共24题)
+  { text: "你享受一步步拆解对手防线的过程，而不是依赖预设combo一波带走", dim: "CR", dir: -1 },
+  { text: "你宁可多盖几张坑稳扎稳打，也不愿冒险贪伤害被反杀", dim: "AD", dir: -1 },
+  { text: "卡组强度是第一位的，比赛上位比魂卡自嗨更有说服力", dim: "SM", dir: -1 },
+  { text: "一场拉锯打满30分钟，每一步博弈都让你更专注而非烦躁", dim: "QG", dir: -1 },
 ];
 
-// Deck database
+// Deck database — 24卡组，含历史地位与圈内梗
 const deckDB = {
-  "电子龙": { icon: "⚡", desc: "后手OTK的教科书，嵌合狂暴龙一拳超人。GX时代情怀，简单粗暴的暴力美学。", playstyle: "后手特化OTK" },
-  "英雄": { icon: "🦸", desc: "融合召唤！从火焰翼人到暗爪，GX老兵的终极信仰。十代永远的本命。", playstyle: "融合展开Beat" },
-  "龙link": { icon: "🐉", desc: "龙族链接的集大成者，从守护龙到弹射龙，一套combo打完场子堪比长城。", playstyle: "高速链接展开" },
-  "斩机": { icon: "🔢", desc: "电子界族的数学之美，西格玛一拳OTK。天梯常客，后手突破的利刃。", playstyle: "后手OTK Combo" },
-  "魔救": { icon: "⛏️", desc: "挖矿同调，翻五张是信仰。亚当族的馈赠，每次翻牌都是一次心跳。", playstyle: "同调展开" },
-  "魔术师": { icon: "🎩", desc: "灵摆召唤的荣光，宙读银金轨迹——灵摆时代的终极形态。扎克的意志永不消亡。", playstyle: "灵摆展开Combo" },
-  "幻影骑士团": { icon: "💀", desc: "墓地即是资源！锈斧断碎剑，暗镇魂的压制美学。ARC-V隼爷的魂。", playstyle: "墓地资源展开" },
-  "废二": { icon: "🔧", desc: "废品同调士+二重身战士=无限可能。不动游星的意志传承，同调召唤是男人的浪漫。", playstyle: "同调展开Combo" },
-  "码语者": { icon: "💻", desc: "Playmaker的王牌。解码语者→转码→访问码语者，电子界族的进化之路。", playstyle: "链接展开" },
-  "转生炎兽": { icon: "🔥", desc: "转生Link召唤！Soulburner的炙热之魂，日光狼的无限循环。", playstyle: "中速Link Beat" },
-  "铁兽": { icon: "🦅", desc: "鸟兽战士大团结！除外墓地拉link，徒花凶鸟的压制艺术。", playstyle: "链接中速控制" },
-  "青眼白龙": { icon: "🐲", desc: "3000攻2500防，海马濑人的绝对骄傲。毁灭的喷射白光！最强凡骨的终极信仰。", playstyle: "高攻压制Beat" },
-  "雷龙": { icon: "⛈️", desc: "除外即展开，超雷龙的封锁令人窒息。从手牌到墓地到除外，三位一体的雷击。", playstyle: "融合控制Beat" },
-  "淘气仙星": { icon: "💫", desc: "每张卡烧你200，铃铛一响血压飙升。蓝色仙女的甜美收割。", playstyle: "Burn控制" },
-  "十二兽": { icon: "🐂", desc: "一卡超量，龙枪单刷。曾经的绝对T0，简洁高效的Xyz暴力美学。", playstyle: "单卡Xyz Beat" },
-  "蛇眼": { icon: "🐍", desc: "罪宝永续魔法，蛇眼炎龙的最强展开。将对手的怪兽当作装备——蛇眼罪宝的霸权。", playstyle: "链接展开中速" },
-  "俱舍怒威族": { icon: "👁️", desc: "里侧除外！空场特召！封锁！新时代的次元控制，出场就让人压力拉满。", playstyle: "封锁控制Beat" },
-  "虫惑魔": { icon: "🕳️", desc: "落穴！狡猾落穴！一套坑洞让你寸步难行。可爱的外表下是最阴间的陷阱。", playstyle: "坑Beat控制" },
-  "御巫": { icon: "🪭", desc: "装备卡反伤，0攻也能秒人。一碰就弹，把对手的攻击力化为自己的武器。", playstyle: "反伤控制" },
-  "真龙": { icon: "🏛️", desc: "上级召唤的最终形态。不需要额外卡组，帝王的尊严靠上级召唤来捍卫。", playstyle: "上级召唤控制" },
-  "黄金国": { icon: "🪙", desc: "黄金卿埃尔德里奇，不死族的永恒之王。一卡站场+陷阱循环，磨到你天荒地老。", playstyle: "陷阱控制Grind" },
-  "闪刀姬": { icon: "✈️", desc: "单卡启动的巅峰，零依一人撑起整个卡组。三魔法的灵活调度，王牌机师的孤高美学。", playstyle: "单卡控制" },
-  "白银城": { icon: "🏰", desc: "迷宫之主的待客之道。从卡组直接发动陷阱，拉比林斯的无限欢迎。", playstyle: "陷阱控制Grind" },
-  "烙印": { icon: "⚜️", desc: "阿不思的落胤与圣女之悲恋。融合召唤的现代复兴，冰剑龙的绝对压制。", playstyle: "融合中速控制" },
+  "电子龙": { icon: "⚡", img: "decks/电子龙.png", desc: "后手OTK教科书，嵌合狂暴龙一拳超人。GX时代至今的暴力美学活化石。梗：电子龙无限吃表常客，「你也是电子龙玩家？」", playstyle: "后手特化OTK" },
+  "英雄": { icon: "🦸", img: "decks/英雄.png", desc: "融合召唤代名词，从火焰翼人到暗爪再到勇者，20年长青信仰。GX老兵永不退休。梗：友尽侠、「英雄到来！」", playstyle: "融合展开Beat" },
+  "龙link": { icon: "🐉", img: "decks/龙link.png", desc: "龙族链接集大成，枪管→前托→装弹，一套combo场子比长城长。梗：龙拳、「弹射龙限一」", playstyle: "高速链接展开" },
+  "斩机": { icon: "🔢", img: "decks/斩机.png", desc: "电子界数学之美，西格玛一拳OTK。MD天梯常客，后手突破的利刃。梗：「圆神启动！」", playstyle: "后手OTK Combo" },
+  "珠泪": { icon: "💧", img: "decks/珠泪.png", desc: "史上最强卡组之一，全盛壹世坏统治力冠绝古今。堆墓融合的终极形态。梗：珠堕、「你也是珠泪？」、「珠泪哀歌」", playstyle: "堆墓融合展开" },
+  "神碑": { icon: "🪦", img: "decks/神碑.png", desc: "除外削卡控制，对手牌组越打越少。极具争议的设计，万年禁限常连。梗：「碑友没有家人」、「削卡下班」", playstyle: "除外削卡控制" },
+  "幻影骑士团": { icon: "💀", img: "decks/幻影骑士团.png", desc: "墓地即资源，锈斧断碎剑暗镇魂。ARC-V隼爷之魂不灭。梗：PK火、「雾剑！」", playstyle: "墓地资源展开" },
+  "废二": { icon: "🔧", img: "decks/废二.png", desc: "废品同调士+二重身=无限可能。游星魂之传承，同调是男人永远的浪漫。梗：流天类星龙、「说书二人转」", playstyle: "同调展开Combo" },
+  "码语者": { icon: "💻", img: "decks/码语者.png", desc: "Playmaker王牌，电子界进化之路。解码→转码→访问，一套带走。梗：「访问码语者一拳超人」", playstyle: "链接展开" },
+  "转生炎兽": { icon: "🔥", img: "decks/转生炎兽.png", desc: "Soulburner炽热之魂，日光狼无限循环。中速Link Beat稳健标杆。梗：转生Link、「犰狳の意志」", playstyle: "中速Link Beat" },
+  "铁兽": { icon: "🦅", img: "decks/铁兽.png", desc: "鸟兽战士大团结，除外墓地拉link。徒花凶鸟压制艺术，战线固若金汤。梗：「铁兽战线」", playstyle: "链接中速控制" },
+  "青眼白龙": { icon: "🐲", img: "decks/青眼白龙.png", desc: "3000/2500，海马濑人的绝对骄傲。最强凡骨，毁灭的喷射白光！梗：社长、「三张青眼融合！」、「布鲁艾斯！」", playstyle: "高攻压制Beat" },
+  "相剑": { icon: "⚔️", img: "decks/相剑.png", desc: "1109时代T0常连，简单高效的中国风同调。赤霄承影，暗转！幻龙族荣光。梗：「相剑大师」、「幻龙族最后的牌面」", playstyle: "同调中速Beat" },
+  "淘气仙星": { icon: "💫", img: "decks/淘气仙星.png", desc: "每张卡烧你200，蓝色仙女的甜美收割。铃铛一响血压飙升。梗：「淘气仙星没有朋友」、「200！」", playstyle: "Burn控制" },
+  "十二兽": { icon: "🐂", img: "decks/十二兽.png", desc: "一卡超量，龙枪单刷。曾经绝对T0，简洁高效的Xyz暴力美学。梗：会局、「一卡动一卡停」", playstyle: "单卡Xyz Beat" },
+  "蛇眼": { icon: "🐍", img: "decks/蛇眼.png", desc: "罪宝永续魔法，蛇眼炎龙最强展开。对手怪兽当装备的霸权体系。梗：「蛇眼罪宝」、「你的怪就是我的装备」", playstyle: "链接展开中速" },
+  "俱舍怒威族": { icon: "👁️", img: "decks/俱舍怒威族.png", desc: "里侧除外！空场特召！封锁！出场即让人压力拉满的次元噩梦。梗：「除外区是我第二手牌」", playstyle: "封锁控制Beat" },
+  "虫惑魔": { icon: "🕳️", img: "decks/虫惑魔.png", desc: "落穴！狡猾落穴！可爱外表下最阴间的陷阱迷宫。梗：虫妹、「你的回合也是我的回合」", playstyle: "坑Beat控制" },
+  "御巫": { icon: "🪭", img: "decks/御巫.png", desc: "装备反伤，0攻也能秒人。把对手攻击力化为自己的武器。梗：「碰瓷卡组」、「0攻战神」", playstyle: "反伤控制" },
+  "真龙": { icon: "🏛️", img: "decks/真龙.png", desc: "上级召唤最终形态，不需要额外卡组。帝王尊严靠上级召唤捍卫。梗：真龙剑皇、「不用额外的骄傲」", playstyle: "上级召唤控制" },
+  "黄金国": { icon: "🪙", img: "decks/黄金国.png", desc: "黄金卿埃尔德里奇，不死族永恒之王。一卡站场+陷阱循环磨到你天荒地老。梗：小金人、「贴纸才是本体」", playstyle: "陷阱控制Grind" },
+  "闪刀姬": { icon: "✈️", img: "decks/闪刀姬.png", desc: "单卡启动巅峰，零依一人撑起整个卡组。三魔法灵活调度，王牌机师孤高美学。梗：「闪刀启动」、「交闪限一の痛」", playstyle: "单卡控制" },
+  "白银城": { icon: "🏰", img: "decks/白银城.png", desc: "迷宫之主待客之道，从卡组直接发动陷阱。拉比林斯无限欢迎！梗：大欢迎、「家具城」、「欢迎来到迷宫」", playstyle: "陷阱控制Grind" },
+  "烙印": { icon: "⚜️", img: "decks/烙印.png", desc: "阿不思与圣女之悲恋，融合召唤现代复兴。冰剑龙绝对压制。梗：烙印融合、「阿不思你又在吃额外了」", playstyle: "融合中速控制" },
 };
 
 // 16 personality types mapped to decks
 const types = {
   CASQ: {
     name: "魂之OTK", alias: "用本命卡组一拳终结对手",
-    desc: "你是一个热情奔放的决斗者，用自己喜欢的卡组打出最畅快的OTK是你的终极追求。你不喜欢拖泥带水，信奉'打得一拳开，免得百拳来'。即使卡组不是最强，你也坚信爱能弥补一切差距。战斗阶段的你眼神最亮。",
+    desc: "你是游戏王最纯粹的浪漫主义者——用自己最爱的卡组，打出最畅快的OTK。你不喜欢拖泥带水，信奉'打得一拳开，免得百拳来'。在你看来，赢牌不靠卡组强度，靠的是你和卡片之间的羁绊。战斗阶段的你眼神最亮，因为你知道——这就是决斗者的灵魂在燃烧。",
     decks: ["电子龙", "青眼白龙"]
   },
   CASG: {
     name: "英雄本色", alias: "融合之光永不熄灭",
-    desc: "你是魂与力量的结合体，相信用自己喜欢的卡组正面击溃对手才是决斗者的正道。你喜欢一步步积累优势然后给予致命一击。你的决斗风格坦荡而坚定，不屑于阴间陷阱，打就要光明正大地赢。",
+    desc: "你是魂与力量的完美结合体。你信奉正面击溃对手才是决斗者的正道，不屑于阴间陷阱和花哨操作。你享受一步步积累优势然后给予致命一击的过程，坦荡而坚定。GX时代的融合之魂在你身上从未熄灭。",
     decks: ["英雄", "青眼白龙"]
   },
   CAMQ: {
-    name: "疾风怒涛", alias: "最快最强的竞技展开者",
-    desc: "你是一个追求极致效率的决斗者，什么强就玩什么，而且还要打出最凶狠的OTK。你对环境的理解很深，总能找到最短的制胜路线。你不爱废话，进战阶就是你的态度宣言。",
+    name: "疾风怒涛", alias: "最快最强的竞技猎手",
+    desc: "你是极致效率的化身——什么强就玩什么，而且还要打出最凶狠的OTK。你对环境理解透彻，总能找到最短的制胜路线。不爱废话，进战阶就是你的态度宣言。你相信：速度就是最强的武器。",
     decks: ["龙link", "斩机"]
   },
   CAMG: {
-    name: "极限展开", alias: "用最强combo征服一切",
-    desc: "你是竞技环境中令人敬畏的展开型玩家。你享受用最复杂的combo做出最恐怖的场子，对卡组运转的理解深入骨髓。你不惧怕长盘，因为有足够的技术储备来应对任何局面。",
-    decks: ["魔救", "魔术师"]
+    name: "深渊领主", alias: "用最强体系碾压一切",
+    desc: "你是竞技环境中的压迫感担当。你享受用最强体系做出最恐怖的场面，对卡组运转的理解深入骨髓。你不惧怕长盘，因为有足够的技术储备应对任何局面。对手看到你的卡组名就会开始皱眉——这就是你的威慑力。",
+    decks: ["珠泪", "蛇眼"]
   },
   CDSQ: {
-    name: "暗影奇袭", alias: "从墓地发动的突袭",
-    desc: "你低调但致命，看似防守实则暗藏杀机。你的决斗风格偏向控制，但一旦抓住机会就会迅速结束比赛。墓地在你眼里不是终点，而是第二手牌。",
+    name: "暗影奇袭", alias: "从墓地发动的致命一击",
+    desc: "你低调但致命。看似防守实则暗藏杀机，你的决斗风格偏向控制，但一旦抓住机会就会迅速结束比赛。墓地在你眼里不是终点，而是第二手牌。对手在你面前放松警惕的那一刻，就是他们输掉决斗的时刻。",
     decks: ["幻影骑士团", "转生炎兽"]
   },
   CDSG: {
     name: "经典咏流传", alias: "同调是男人永远的浪漫",
-    desc: "你是一个怀旧而坚韧的决斗者。你喜欢经典的combo，享受每一次精密运转带来的成就感。虽然你不是最强的竞技选手，但你对卡组的理解和热爱是最深的。同调召唤是你心中永不褪色的浪漫。",
+    desc: "你是一个怀旧而坚韧的决斗者。你喜欢经典的combo套路，享受每一次精密运转带来的成就感。虽然你不是最强的竞技选手，但你对卡组的理解和热爱是最深的。同调召唤是你心中永不褪色的浪漫——流天类星龙的光芒永远照耀你的决斗之路。",
     decks: ["废二", "码语者"]
   },
   CDMQ: {
     name: "速攻铁壁", alias: "竞技场上的效率控场者",
-    desc: "你是一个理性的竞技型玩家，善于在控制和效率之间找到平衡。你不追求铺天盖地的展开，而是用最精简的操作达到最好的压制效果。你是那种让对手觉得'打不动'的决斗者。",
-    decks: ["铁兽", "转生炎兽"]
+    desc: "你是一个理性的竞技型玩家，善于在控制和效率之间找到完美平衡。你不追求铺天盖地的展开，而是用最精简的操作达到最好的压制效果。你是那种让对手觉得'打不动'的决斗者——而你自己却游刃有余。",
+    decks: ["铁兽", "相剑"]
   },
   CDMG: {
     name: "铁壁构筑", alias: "长盘中的不败堡垒",
-    desc: "你是竞技环境中最稳定的存在。你的卡组构筑精妙而坚固，不依赖单一combo，有着多线作战的能力。长盘拉锯是你的主场，越到后期你越从容。",
+    desc: "你是竞技环境中最稳定的存在。你的卡组构筑精妙而坚固，不依赖单一combo，有着多线作战的能力。长盘拉锯是你的主场，越到后期你越从容。对手越打越绝望，而你只是微微一笑——你等的就是这一刻。",
     decks: ["烙印", "铁兽"]
   },
   RASQ: {
     name: "魂之拳", alias: "简单直接地揍翻对手",
-    desc: "你不喜欢花哨的操作，见招拆招才是你的风格。你喜欢用高攻大怪堂堂正正地碾压对手，简单、直接、有效。你打牌不追求复杂的combo，但每一拳都致命。",
-    decks: ["青眼白龙", "雷龙"]
+    desc: "你不喜欢花哨的操作，见招拆招才是你的风格。你喜欢用高攻大怪堂堂正正碾压对手——简单、直接、有效。你打牌不追求复杂combo，但每一拳都致命。社长精神在你身上完美传承：力量就是正义。",
+    decks: ["青眼白龙", "电子龙"]
   },
   RASG: {
     name: "闪耀风暴", alias: "用光芒照亮整个决斗场",
-    desc: "你是一个闪耀的魂系决斗者，不依赖复杂的展开，靠扎实的卡片质量和敏锐的临场判断取胜。你喜欢每一张卡都有用的感觉，卡组就是你的工具箱。",
-    decks: ["雷龙", "淘气仙星"]
+    desc: "你是一个闪耀的魂系决斗者，不依赖复杂展开，而是靠扎实的卡片质量和敏锐临场判断取胜。你喜欢每一张卡都有用的感觉，卡组就是你的工具箱。你的决斗风格光明磊落，但每一步都藏着对卡片最深刻的理解。",
+    decks: ["青眼白龙", "淘气仙星"]
   },
   RAMQ: {
     name: "速攻制胜", alias: "高效就是最强的武器",
-    desc: "你信奉效率至上。什么卡组最强、最快、最稳定，你就玩什么。你对环境的理解透彻，善于找到最短的胜利路径。在你的字典里，效率就是一切。",
+    desc: "你信奉效率至上——什么卡组最强、最快、最稳定，你就玩什么。你对环境的理解透彻，善于找到最短的胜利路径。在你的字典里，效率就是一切。你不在乎卡组有没有'魂'，赢了就是最好的答案。",
     decks: ["十二兽", "蛇眼"]
   },
   RAMG: {
     name: "霸道总裁", alias: "全场都在我掌控之中",
-    desc: "你是竞技场上令人畏惧的控场型玩家。你的卡组兼具压制力和持久力，让对手从一开始就感受到压力。你不怒自威，每一步操作都带着强烈的压迫感。",
-    decks: ["蛇眼", "俱舍怒威族"]
+    desc: "你是竞技场上令人畏惧的控场型玩家。你的卡组兼具压制力和持久力，让对手从一开始就感受到压力。你不怒自威，每一步操作都带着强烈的压迫感。对手在你面前思考时间会不由自主变长——因为他们知道一步走错就是深渊。",
+    decks: ["俱舍怒威族", "珠泪"]
   },
   RDSQ: {
     name: "阴间小清新", alias: "陷阱是最高级的艺术",
-    desc: "你外表温和，内心却深不可测。你喜欢用陷阱和反制来打乱对手的节奏，让对手在你的迷宫中寸步难行。你的决斗风格讲究优雅和效率的平衡。",
+    desc: "你外表温和内心却深不可测。你喜欢用陷阱和反制打乱对手节奏，让对手在你的迷宫中寸步难行。你不在乎被人说'阴间'——因为在你看来，能把对手玩到崩溃才是真正的胜利。你的微笑背后藏着一万个落穴。",
     decks: ["虫惑魔", "御巫"]
   },
   RDSG: {
     name: "古之壁", alias: "历经风雨而不倒的老兵",
-    desc: "你是游戏王中的智者，不追求速胜，而是享受用经验和智慧慢慢磨垮对手的过程。你的卡组稳固如山，每一张卡都有它的使命。时间是你的朋友。",
+    desc: "你是游戏王中的智者，不追求速胜，而是享受用经验和智慧慢慢磨垮对手的过程。你的卡组稳固如山，每一张卡都有它的使命。时间是你的朋友，越长的对局你越从容。对手急躁失误的那一刻，就是你的胜利之时。",
     decks: ["真龙", "黄金国"]
   },
   RDMQ: {
     name: "王牌机师", alias: "孤高而精准的操控者",
-    desc: "你是决斗场上的孤高存在。不需要铺满场面，几张关键卡就能掌控全局。你对卡组运转的理解极深，每一步操作都经过精密计算，是真正的人机合一。",
+    desc: "你是决斗场上的孤高存在——不需要铺满场面，几张关键卡就能掌控全局。你对卡组运转的理解极深，每一步操作都经过精密计算，是真正的人机合一。闪刀姬是你的完美写照：一个人、三张魔法、无限可能。",
     decks: ["闪刀姬"]
   },
   RDMG: {
     name: "深渊掌控", alias: "在长盘中最恐怖的对手",
-    desc: "你是竞技环境中的终极控制型玩家。放慢节奏、消耗资源、耐心布局——越到后期你越危险。你的卡组就像一座深渊，对手越深入越绝望。",
-    decks: ["白银城", "烙印"]
+    desc: "你是竞技环境中的终极控制型玩家。放慢节奏、消耗资源、耐心布局——越到后期你越危险。你的卡组就像一座深渊，对手越深入越绝望。白银城的迷宫也好，烙印的终场也好，都是你精心编织的网。",
+    decks: ["白银城", "神碑"]
   },
 };
+
+// 决斗者评语库 — 每种类型4条，每条30-40字，满载游戏王梗
+const commentaries = {
+  CASQ: [
+    "进战阶就是你最灿烂的笑容，用本命卡组一拳灌爆对手才是决斗者的本能！",
+    "你的决斗比社长还快——三回合不分胜负算我输，布鲁艾斯！",
+    "不打控制不玩坑，堂堂正正OTK。粉碎！玉碎！大喝彩！",
+    "电子龙无限？不，是你对本命卡组的爱无限。后手就是你最强的先手。",
+  ],
+  CASG: [
+    "二十年的英雄魂不灭，从火焰翼人到勇者，融合是你永远的信仰。",
+    "友尽侠在手天下我有，英雄的到来永远不会迟到。变身！",
+    "GX时代的融合之魂在你身上从未熄灭，每一场决斗都是一次变身。",
+    "不屑阴间陷阱，正面击溃对手才是决斗者的正道。强攻即正义！",
+  ],
+  CAMQ: [
+    "圆神启动！你对环境的理解比饼图还透彻，速战速决从不墨迹。",
+    "访问码语者是你最好的朋友——一拳不够？那就再来一拳！",
+    "龙拳一挥前托装弹，说书速度比对手投降还快，效率就是一切。",
+    "什么强玩什么，还要打出最凶狠的OTK。天梯上分机器的终极形态。",
+  ],
+  CAMG: [
+    "珠泪哀歌响彻四方，全盛壹世坏的压迫感在你手中完美重现。",
+    "你不是在说书，你是在写史诗。对手看到终场已开始考虑下一把。",
+    "蛇眼罪宝的霸权体系在你手中运转自如——你的怪就是我的装备。",
+    "竞技环境中的终极压迫感，长盘拉锯中越打越强的恐怖存在。",
+  ],
+  CDSQ: [
+    "雾剑！暗镇魂！墓地是你第二手牌，从阴影中发动致命一击。",
+    "低调但致命，看似防守实则暗藏杀机。对手放松的瞬间就是终局。",
+    "PK火永不熄灭，断碎剑的寒光在墓地中静静等待最佳时机。",
+    "转生Link无限循环，日光狼的意志在每一次转生中愈发炽热。",
+  ],
+  CDSG: [
+    "流天类星龙的光芒永远照耀你的决斗之路，同调是男人至死不渝的浪漫。",
+    "废品同调士+二重身=无限可能。说书二人转是你心中最美的舞蹈。",
+    "码语者进化之路在你脚下延伸，解码→转码→访问，经典永不过时。",
+    "你不是最快的决斗者，但你是最有耐心的。精密运转的成就感无可替代。",
+  ],
+  CDMQ: [
+    "赤霄承影暗转一套带走！相剑大师从不墨迹，高效就是最强的武器。",
+    "铁兽战线的精密运转在你手中如同钟表——精准、高效、无情。",
+    "不追求铺天盖地的展开，用最精简的操作达到最好的压制效果。",
+    "徒花凶鸟的压制艺术在你手中炉火纯青，对面打不动而你游刃有余。",
+  ],
+  CDMG: [
+    "阿不思又在吃对面额外了！烙印融合的终场比万里长城还坚固。",
+    "你是越打越稳的选手，长盘拉锯的不败堡垒。对手越打越绝望。",
+    "铁兽战线的防线固若金汤，多线作战能力让你在后期愈发从容。",
+    "精心编织的网慢慢收紧，对手在你的节奏中一步步走向深渊。",
+  ],
+  RASQ: [
+    "粉碎！玉碎！大喝彩！社长精神永存，高攻大怪一拳超人！",
+    "不需要花哨combo，用3000攻的布鲁艾斯堂堂正正碾过去就完事了。",
+    "简单直接就是你的美学，见招拆招然后一拳KO。力量就是正义！",
+    "你打牌不追求复杂展开，但进战阶的每一拳都让对手胆战心惊。",
+  ],
+  RASG: [
+    "毁灭的喷射白光！3000/2500就是你心中最完美的怪兽身材。",
+    "淘气仙星铃铛一响对面血压拉满，温柔地烧完最后200LP。",
+    "扎实的卡片质量+敏锐的临场判断=闪耀全场的魂系战士。",
+    "光明磊落的决斗风格背后，藏着对每一张卡最深刻的理解与热爱。",
+  ],
+  RAMQ: [
+    "一卡动一卡停，龙枪单刷。十二兽的简洁暴力在你手中淋漓尽致。",
+    "蛇眼罪宝在手，你的怪就是我的装备。高效霸权不留任何多余动作。",
+    "饼图顶端的常客，什么最强玩什么。效率就是最好的答案。",
+    "天梯冲分不废话，最短的胜利路径就是你永恒的追求。",
+  ],
+  RAMG: [
+    "除外区是你第二手牌，俱舍怒威族的次元噩梦让对手从开局就绝望。",
+    "全场都在你掌控之中，每一步操作都带着T0卡组的绝对威严。",
+    "不怒自威的压迫感让对面思考时间不由自主变长——深渊在凝视。",
+    "兼具压制力与持久力，竞技场上的霸道总裁从不给对手喘息之机。",
+  ],
+  RDSQ: [
+    "落穴！狡猾落穴！你的回合也是我的回合，可爱虫妹是千年老阴间。",
+    "御巫0攻战神，把对手攻击力化为自己的武器。碰瓷的艺术登峰造极。",
+    "外表温和内心深不见底，微笑背后藏着一万个落穴等你来踩。",
+    "你的陷阱迷宫让对手寸步难行——能在你的回合动是给你的恩赐。",
+  ],
+  RDSG: [
+    "真龙不需要额外！上级召唤的帝王尊严在你手中代代传承。",
+    "小金人一站陷阱一盖，对手在你的黄金国迷宫中慢慢沉沦。",
+    "时间是朋友不是敌人，越长的对局你越从容。老兵不死也不凋零。",
+    "贴纸才是真正的王牌，用经验和智慧慢慢磨垮对手的意志。",
+  ],
+  RDMQ: [
+    "闪刀启动！零依一人撑起整个卡组，交闪限一之痛永世不忘。",
+    "三魔法在手天下我有，一个人就是一支军队。孤高的王牌机师。",
+    "不铺场面不展开，几张关键卡就能掌控全局。人机合一的完美境界。",
+    "你是决斗场上最孤高的存在——精准、冷静、优雅，从不浪费一步。",
+  ],
+  RDMG: [
+    "大欢迎！欢迎来到白银城的迷宫，拉比林斯的待客之道从不让人失望。",
+    "碑友传说永流传——对手牌组越来越少，你的笑容越来越灿烂。",
+    "放慢节奏耐心布局，越到后期越危险。你是长盘中最恐怖的对手。",
+    "白银城的迷宫也好烙印的终场也好，都是你精心编织的死亡之网。",
+  ],
+};
+
+// 特殊评语 — 根据分数特征触发
+const specialCommentaries = {
+  // 四维全在45-55%边界 → 真正的万金油
+  allBorderline: [
+    "你是真正的决斗变色龙！什么卡组到你手里都能玩出花，没有固定的风格就是你最大的风格。",
+    "四维全在边界线上徘徊——你不是没有倾向，你是全都要！游戏王界的六边形战士。",
+    "你的决斗风格像魔术师卡组一样捉摸不透，今天展开明天坑Beat，对手永远猜不到。",
+  ],
+  // 某维度极端 (>80%)
+  extreme: [
+    "这个维度的倾向已经刻进了你的DNA——就像海马濑人对青眼白龙的执着一样不可动摇！",
+    "极端值警告！你对这个维度的坚持就像禁卡表对某些卡的执念——永远不改！",
+    "在这一维度上你已超越了99%的决斗者，纯度极高，属于见了就得喊一声大佬的水平。",
+  ],
+  // 四个维度一致性全高 → 非常了解自己
+  allConsistent: [
+    "四维全高一致！你对自己打牌风格的认识比珠泪的全盛时期还要清晰。",
+    "你对每一题的回答都高度自洽，说明你是个非常清楚自己要什么的决斗者。",
+    "回答一致性拉满——你对自己决斗风格的认知比对禁卡表的了解还透彻。",
+  ],
+  // 低可信度 → 自我认知混乱
+  lowReliability: [
+    "你的回答有些前后矛盾，是不是像在饼图和魂卡之间反复横跳？建议再测一次整顿内心！",
+    "一致性偏低——你可能像被灰流丽打断了一样在答题时犹豫不决。决斗者的心要坚定！",
+    "你在不同维度之间反复摇摆，像一个被三康压制的展开卡组——冷静下来再试一次吧。",
+  ],
+};
+
+// 从数组中随机选一条
+function pickOne(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+// 根据结果数据选取评语
+function pickCommentary(pcts, typeCode, borderline, consistency, reliability) {
+  const pool = [];
+
+  // 主类型评语 (权重最高, 放3条)
+  if (commentaries[typeCode]) {
+    pool.push(...commentaries[typeCode]);
+  }
+
+  // 特殊条件评语
+  if (borderline.length >= 4) {
+    pool.push(...specialCommentaries.allBorderline);
+  }
+  const extremes = Object.entries(pcts).filter(([, v]) => v >= 80 || v <= 20);
+  if (extremes.length >= 2) {
+    pool.push(...specialCommentaries.extreme);
+  }
+  const conVals = Object.values(consistency);
+  if (conVals.every(c => c === 'high')) {
+    pool.push(...specialCommentaries.allConsistent);
+  }
+  if (reliability === 'low') {
+    pool.push(...specialCommentaries.lowReliability);
+  }
+
+  return pickOne(pool);
+}
 
 // ===================== STATE =====================
 
@@ -593,18 +807,42 @@ function prevQuestion() {
 function calculateResults() {
   const scores = { CR: 0, AD: 0, SM: 0, QG: 0 };
   const counts = { CR: 0, AD: 0, SM: 0, QG: 0 };
+  // 按维度收集调整后的分值用于一致性检测
+  const dimAnswers = { CR: [], AD: [], SM: [], QG: [] };
 
   questions.forEach((q, i) => {
     if (answers[i] === 0) return;
     scores[q.dim] += answers[i] * q.dir;
     counts[q.dim] += 5;
+    // dir=-1 的题翻转分值: 选"不同意"反向题 = 同意正向立场
+    dimAnswers[q.dim].push(q.dir === 1 ? answers[i] : (6 - answers[i]));
   });
 
   const pcts = {};
+  const borderline = [];
   for (const dim of ['CR', 'AD', 'SM', 'QG']) {
     const maxScore = counts[dim];
     pcts[dim] = Math.round(((scores[dim] + maxScore) / (2 * maxScore)) * 100);
+    if (pcts[dim] >= 45 && pcts[dim] <= 55) borderline.push(dim);
   }
+
+  // 一致性检测: 计算每维调整后分值的标准差
+  function stddev(arr) {
+    const mean = arr.reduce((s, v) => s + v, 0) / arr.length;
+    const variance = arr.reduce((s, v) => s + (v - mean) ** 2, 0) / arr.length;
+    return Math.sqrt(variance);
+  }
+  const consistency = {};
+  let consistentDims = 0;
+  for (const dim of ['CR', 'AD', 'SM', 'QG']) {
+    const std = stddev(dimAnswers[dim]);
+    consistency[dim] = std < 1.0 ? 'high' : (std < 1.5 ? 'mid' : 'low');
+    if (consistency[dim] === 'high') consistentDims++;
+  }
+  // 综合可信度
+  let reliability = 'high';
+  if (consistentDims <= 2) reliability = 'low';
+  else if (consistentDims === 3) reliability = 'mid';
 
   const typeCode =
     (pcts.CR >= 50 ? 'C' : 'R') +
@@ -612,13 +850,13 @@ function calculateResults() {
     (pcts.SM >= 50 ? 'S' : 'M') +
     (pcts.QG >= 50 ? 'Q' : 'G');
 
-  return { scores, pcts, typeCode };
+  return { scores, pcts, typeCode, borderline, consistency, reliability };
 }
 
 // ===================== RESULTS =====================
 
 function showResults() {
-  const { pcts, typeCode } = calculateResults();
+  const { pcts, typeCode, borderline, consistency, reliability } = calculateResults();
   const type = types[typeCode];
 
   showPage('results');
@@ -627,15 +865,30 @@ function showResults() {
   document.getElementById('result-alias').textContent = type.alias;
   document.getElementById('result-desc').textContent = type.desc;
 
+  // 决斗者评语
+  const commentary = pickCommentary(pcts, typeCode, borderline, consistency, reliability);
+  document.getElementById('result-commentary').textContent = commentary;
+
+  // 可信度指示器 (精简到alias行)
+  const relLabels = { high: '高', mid: '中等', low: '较低' };
+  const relColors = { high: '#4a9', mid: '#ca8', low: '#c66' };
+  const highCount = Object.values(consistency).filter(c => c === 'high').length;
+  const relEmoji = reliability === 'high' ? '★' : (reliability === 'mid' ? '☆' : '◎');
+  document.getElementById('result-alias').insertAdjacentHTML('afterend',
+    `<div style="margin-bottom:16px;font-size:12px;color:${relColors[reliability]};">` +
+    `一致度 ${relEmoji} ${relLabels[reliability]} (${highCount}/4)</div>`);
+
   // Deck cards
   const deckContainer = document.getElementById('deck-cards');
   deckContainer.innerHTML = type.decks.map(d => {
-    const info = deckDB[d] || { icon: '🃏', desc: '', playstyle: '' };
+    const info = deckDB[d] || { icon: '🃏', img: '', desc: '', playstyle: '' };
+    const imgTag = info.img ? `<img src="${info.img}" class="deck-thumb" alt="${d}" loading="lazy">` : `<div class="deck-icon">${info.icon}</div>`;
     return `
       <div class="deck-card">
-        <div class="deck-icon">${info.icon}</div>
+        ${imgTag}
         <div class="deck-info">
           <div class="deck-name">${d}</div>
+          ${info.playstyle ? `<span class="deck-playstyle">${info.playstyle}</span>` : ''}
           <div class="deck-desc">${info.desc}</div>
         </div>
       </div>`;
@@ -654,6 +907,9 @@ function showResults() {
   for (const dim of ['CR', 'AD', 'SM', 'QG']) {
     const p = pcts[dim];
     const labels = dimLabels[dim];
+    const isBorderline = borderline.includes(dim);
+    const con = consistency[dim];
+    const conIcon = con === 'high' ? '✓' : (con === 'mid' ? '⚠' : '✗');
     const row = document.createElement('div');
     row.className = 'dim-row';
     row.innerHTML = `
@@ -663,12 +919,12 @@ function showResults() {
         <div class="dim-bar-right" style="width:${100 - p}%"></div>
       </div>
       <span class="right">${labels.right}</span>
-      <span class="dim-pct">${p}% / ${100 - p}%</span>
+      <span class="dim-pct" style="color:${isBorderline ? '#ca8' : ''}">${p}% / ${100 - p}%${isBorderline ? ' ⚡' : ''} ${conIcon}</span>
     `;
     dimsContainer.appendChild(row);
   }
 
-  window._resultData = { pcts, typeCode, type };
+  window._resultData = { pcts, typeCode, type, borderline, consistency, reliability, commentary };
   document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
 }
 
@@ -691,9 +947,10 @@ function closeShare() {
 }
 
 function drawShareCanvas() {
-  const { pcts, typeCode, type } = window._resultData;
+  const { pcts, typeCode, type, borderline, consistency, reliability, commentary } = window._resultData;
   const canvas = document.getElementById('share-canvas');
   const ctx = canvas.getContext('2d');
+  window._shareCanvasCtx = ctx;
   const W = canvas.width;
   const H = canvas.height;
 
@@ -748,17 +1005,100 @@ function drawShareCanvas() {
   ctx.fillText('推荐卡组', 50, y);
 
   y += 20;
-  type.decks.forEach(d => {
-    const info = deckDB[d] || { icon: '🃏', desc: '', playstyle: '' };
+
+  // Draw deck cards with images
+  const deckY = y;
+  const deckHeight = 80;
+  const deckGap = 10;
+  const loadedImgs = [];
+  let loadedCount = 0;
+
+  function drawDeckCardFinal(c, item) {
+    c.fillStyle = '#222240';
+    c.beginPath();
+    c.roundRect(50, item.cy, W - 100, deckHeight, 8);
+    c.fill();
+    c.strokeStyle = '#3a3550';
+    c.lineWidth = 1;
+    c.beginPath();
+    c.roundRect(50, item.cy, W - 100, deckHeight, 8);
+    c.stroke();
+    if (item.img.complete && item.img.naturalWidth > 0) {
+      c.drawImage(item.img, 64, item.cy + 5, 48, 70);
+      c.fillStyle = '#e8e0d0';
+      c.font = 'bold 16px -apple-system, "PingFang SC", sans-serif';
+      c.textAlign = 'left';
+      c.fillText(item.d, 126, item.cy + 32);
+      if (item.info.playstyle) {
+        c.fillStyle = '#9a9484';
+        c.font = '11px -apple-system, "PingFang SC", sans-serif';
+        c.fillText(item.info.playstyle, 126, item.cy + 52);
+      }
+    } else {
+      c.fillStyle = '#e8e0d0';
+      c.font = 'bold 16px -apple-system, "PingFang SC", sans-serif';
+      c.textAlign = 'left';
+      c.fillText(item.info.icon + '  ' + item.d, 74, item.cy + 44);
+    }
+  }
+
+  function onDeckImageLoaded() {
+    loadedCount++;
+    if (loadedCount !== loadedImgs.length || !window._shareCanvasCtx) return;
+    loadedImgs.forEach(item => drawDeckCardFinal(window._shareCanvasCtx, item));
+  }
+
+  type.decks.forEach((d, i) => {
+    const info = deckDB[d] || { icon: '🃏', img: '', desc: '', playstyle: '' };
+    const cy = deckY + i * (deckHeight + deckGap);
+
+    // Draw card background
     ctx.fillStyle = '#222240';
     ctx.beginPath();
-    ctx.roundRect(50, y, W - 100, 44, 8);
+    ctx.roundRect(50, cy, W - 100, deckHeight, 8);
     ctx.fill();
-    ctx.fillStyle = '#e8e0d0';
-    ctx.font = '15px -apple-system, "PingFang SC", sans-serif';
-    ctx.fillText(info.icon + '  ' + d, 64, y + 30);
-    y += 56;
+
+    ctx.strokeStyle = '#3a3550';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.roundRect(50, cy, W - 100, deckHeight, 8);
+    ctx.stroke();
+
+    if (info.img) {
+      const img = new Image();
+      img.onload = onDeckImageLoaded;
+      img.onerror = onDeckImageLoaded;
+      img.src = info.img;
+      loadedImgs.push({ img, info, d, cy });
+    } else {
+      ctx.fillStyle = '#e8e0d0';
+      ctx.font = 'bold 16px -apple-system, "PingFang SC", sans-serif';
+      ctx.fillText(info.icon + '  ' + d, 74, cy + 44);
+    }
   });
+
+  // 兜底：500ms后若图片仍未全部触发onload，强制重绘
+  if (loadedImgs.length > 0) {
+    setTimeout(() => {
+      if (loadedCount < loadedImgs.length && window._shareCanvasCtx) {
+        loadedImgs.forEach(item => drawDeckCardFinal(window._shareCanvasCtx, item));
+      }
+    }, 500);
+  }
+
+  // 初始文字（图片加载完成后会被覆盖）
+  type.decks.forEach((d, i) => {
+    const info = deckDB[d] || { icon: '🃏', desc: '' };
+    const cy = deckY + i * (deckHeight + deckGap);
+    if (!info.img) return;
+    ctx.fillStyle = '#9a9484';
+    ctx.font = 'bold 16px -apple-system, "PingFang SC", sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText(info.icon + '  ' + d, 74, cy + 44);
+    ctx.textAlign = 'center';
+  });
+
+  y = deckY + type.decks.length * (deckHeight + deckGap);
 
   // Dimension bars
   y += 8;
@@ -781,6 +1121,7 @@ function drawShareCanvas() {
   dimOrder.forEach(dim => {
     const p = pcts[dim];
     const labels = dimLabels[dim];
+    const isBorderline = borderline.includes(dim);
 
     ctx.fillStyle = '#c9a44b';
     ctx.textAlign = 'left';
@@ -810,18 +1151,48 @@ function drawShareCanvas() {
       ctx.fill();
     }
 
-    ctx.fillStyle = '#e8e0d0';
+    ctx.fillStyle = isBorderline ? '#ca8' : '#e8e0d0';
     ctx.font = 'bold 10px -apple-system, "PingFang SC", sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText(p + '% : ' + (100 - p) + '%', W / 2, y + 9);
+    const bText = isBorderline ? ' ⚡' : '';
+    ctx.fillText(p + '% : ' + (100 - p) + '%' + bText, W / 2, y + 9);
     ctx.textAlign = 'left';
     ctx.font = '11px -apple-system, "PingFang SC", sans-serif';
 
     y += 24;
   });
 
-  // Footer
+  // Commentary
+  y += 8;
+  const relLabels = { high: '高', mid: '中等', low: '较低' };
+  const relColors = { high: '#4a9', mid: '#ca8', low: '#c66' };
+  ctx.fillStyle = '#222240';
+  ctx.beginPath();
+  ctx.roundRect(40, y, W - 80, 52, 8);
+  ctx.fill();
+  ctx.strokeStyle = '#c9a44b';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.roundRect(40, y, W - 80, 52, 8);
+  ctx.stroke();
+
+  ctx.fillStyle = '#e0c068';
+  ctx.font = 'italic 13px -apple-system, "PingFang SC", sans-serif';
+  ctx.textAlign = 'center';
+  wrapText(ctx, '「' + commentary + '」', W / 2, y + 22, W - 100, 18);
+
+  y += 62;
+
+  // Consistency indicator
+  ctx.fillStyle = relColors[reliability];
+  ctx.font = '11px -apple-system, "PingFang SC", sans-serif';
+  ctx.textAlign = 'center';
+  const highCount = Object.values(consistency).filter(c => c === 'high').length;
+  ctx.fillText(`一致度: ${relLabels[reliability]} (${highCount}/4)`, W / 2, y);
   y += 16;
+
+  // Footer
+  y += 22;
   ctx.fillStyle = '#5a5570';
   ctx.font = '12px -apple-system, "PingFang SC", sans-serif';
   ctx.textAlign = 'center';
